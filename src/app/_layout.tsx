@@ -1,15 +1,12 @@
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-import { Tabs } from "expo-router";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import React from "react";
+import { Stack, useRouter, useSegments } from "expo-router";
+import { useEffect, useState } from "react";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { ActivityIndicator, View } from "react-native";
 
-SplashScreen.preventAutoHideAsync();
-
-export default function TabLayout() {
+export default function RootLayout() {
   const [loaded, error] = useFonts({
-    // eslint-disable-next-line prettier/prettier
     "Spiegel Regular": require("../assets/fonts/SpiegelSans Regular.otf"),
     "Spiegel SemiBold": require("../assets/fonts/SpiegelSans SemiBold.otf"),
     "Spiegel Bold": require("../assets/fonts/SpiegelSans Bold.otf"),
@@ -28,18 +25,51 @@ export default function TabLayout() {
   if (!loaded && !error) {
     return null;
   }
+  
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
+  const router = useRouter();
+  const segments = useSegments();
+
+  const onAuthStateChange = (user: FirebaseAuthTypes.User | null) => {
+    console.log("onAuthStateChange", user);
+    setUser(user);
+    if (initializing) setInitializing(false);
+  };
+
+  useEffect(() => {
+    const suscriber = auth().onAuthStateChanged(onAuthStateChange);
+    return suscriber;
+  });
+
+  useEffect(() => {
+    if (initializing) return;
+    const inAuthGroup = segments[0] === "(auth)";
+
+    if (user && !inAuthGroup) {
+      router.replace("/(auth)/home");
+    } else if (!user && inAuthGroup) {
+      router.replace("/");
+    }
+  }, [user, initializing]);
+
+  if (initializing)
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    );
 
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: "blue", headerShown: false }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "List",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome size={28} name="list" color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="(auth)" />
+    </Stack>
   );
 }

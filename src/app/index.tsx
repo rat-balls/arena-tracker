@@ -1,40 +1,86 @@
+import { useState } from "react";
 import {
+  Button,
   KeyboardAvoidingView,
-  Platform,
-  StatusBar,
   StyleSheet,
+  TextInput,
+  View,
+  Text,
+  ActivityIndicator,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import ChampionListComponent from "../components/championListComponent";
-
+import auth from "@react-native-firebase/auth";
+import { FirebaseError } from "@firebase/util";
 export default function Index() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const signUp = async () => {
+    setLoading(true);
+    try {
+      await auth().createUserWithEmailAndPassword(email, password);
+      alert("Account created !");
+    } catch (e: any) {
+      const err = e as FirebaseError;
+      alert("Registration failed: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const signIn = async () => {
+    setLoading(true);
+    try {
+      await auth().signInWithEmailAndPassword(email, password);
+      alert("You are logged in");
+    } catch (e: any) {
+      const err = e as FirebaseError;
+      alert("Login failed: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1 }}>
-        <StatusBar backgroundColor="white" />
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          enabled
-          style={{ flex: 1 }}
-        >
-          <LinearGradient
-            colors={["#091428", "#0A1428"]}
-            style={s.background}
-          />
-          <ChampionListComponent />
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <View style={styles.container}>
+      <KeyboardAvoidingView behavior="padding">
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType={"email-address"}
+          placeholder={"email"}
+        />
+        <Text>Password</Text>
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          placeholder={"Password"}
+        />
+        {loading ? (
+          <ActivityIndicator size={"small"} style={{ margin: 28 }} />
+        ) : (
+          <>
+            <Button onPress={signUp} title="Create Account"></Button>
+            <Button onPress={signIn} title="Login"></Button>
+          </>
+        )}
+      </KeyboardAvoidingView>
+    </View>
   );
 }
 
-const s = StyleSheet.create({
-  background: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    height: "100%",
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginHorizontal: 20,
+    justifyContent: "center",
+  },
+  input: {
+    marginVertical: 4,
+    height: 50,
   },
 });
