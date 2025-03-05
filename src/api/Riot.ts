@@ -1,6 +1,9 @@
 const API_KEY = "XXXXXXXXXXXXXXXXXXXXX";
 const GAME_MODE = "CHERRY";
-const REQUEST_DELAY = 1200; // Delay in milliseconds (1.2 seconds)
+
+if (API_KEY === undefined || API_KEY.length === 0) {
+  throw new Error("Not riot api key in env");
+}
 
 interface RiotAccount {
   puuid: string;
