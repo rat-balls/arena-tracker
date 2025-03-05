@@ -1,4 +1,4 @@
-const API_KEY = "XXXXXXXXXXXXXXXXXXXXX";
+const API_KEY = process.env.EXPO_PUBLIC_RIOT_API;
 const GAME_MODE = "CHERRY";
 
 if (API_KEY === undefined || API_KEY.length === 0) {
