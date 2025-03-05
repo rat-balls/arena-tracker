@@ -44,7 +44,7 @@ export default function RootLayout() {
     if (user && !inAuthGroup) {
       router.replace("/(auth)/home");
     } else if (!user && inAuthGroup) {
-      router.replace("/(auth)/home");
+      router.replace("/");
     }
   }, [user, initializing]);
 
