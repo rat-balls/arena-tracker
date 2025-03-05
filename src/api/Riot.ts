@@ -5,41 +5,46 @@ if (API_KEY === undefined || API_KEY.length === 0) {
   throw new Error("Not riot api key in env");
 }
 
-interface RiotAccount {
+export interface RiotAccount {
   puuid: string;
   gameName: string;
   tagLine: string;
 }
 
-interface MatchParticipant {
+export interface MatchParticipant {
   puuid: string;
   championName: string;
   placement: number;
 }
 
-interface MatchInfo {
+export interface MatchInfo {
   participants: MatchParticipant[];
 }
 
-interface MatchDetails {
+export interface MatchDetails {
   info: MatchInfo;
 }
 
 /**
  * Helper function for making a fetch request, handles fetch error and json parsing error
+ * @type T The type of the response
  * @param url
- * @returns A promise with the specified type
+ * @returns A promise of type T
  */
 async function FetchRequest<T>(url: string) {
   return new Promise<T>((resolve, reject) => {
     fetch(url)
       .then((response) => {
-        response
-          .json()
-          .then((json: T) => {
-            resolve(json);
-          })
-          .catch((err) => reject("ERROR PARSING JSON " + err));
+        if (response.ok) {
+          response
+            .json()
+            .then((json: T) => {
+              resolve(json);
+            })
+            .catch((err) => reject("ERROR PARSING JSON " + err));
+        } else {
+          reject("RESPONSE DIDN'T RETURN STATUS OK: " + response.status);
+        }
       })
       .catch((err) => reject("ERROR FETCHING " + err));
   });
@@ -48,13 +53,13 @@ async function FetchRequest<T>(url: string) {
 /**
  * Main class for handling communication with the Rioat API
  */
-export default class RiotService {
+export class RiotService {
   /**
    * Fetch player account details
    * @param gameName Player name in game
    * @param tagLine Player tag in game
    * @param region Player region
-   * @returns Account details such as puuid
+   * @returns Promise of Account details
    */
   public static async FetchAccountInfo(
     gameName: string,
@@ -66,18 +71,34 @@ export default class RiotService {
     return FetchRequest<RiotAccount>(url);
   }
 
+  /**
+   * Fetch player's match history
+   * @param puuid Player's uuid
+   * @param region Player's region
+   * @param count How many matchs to fetch
+   * @returns Promise of list of Match ids
+   */
   public static FetchMatchHistory(
     puuid: string,
     region: string,
+    count: number,
   ): Promise<string[]> {
     const start = 0;
-    const count = 5;
     const url = `https://${region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${API_KEY}`;
 
     return FetchRequest<string[]>(url);
   }
 
-  public static FetchMatchDetails(matchId: string, region: string) {
+  /**
+   * Fetch match detail
+   * @param matchId Match id
+   * @param region Match region
+   * @returns Promise of match details
+   */
+  public static FetchMatchDetails(
+    matchId: string,
+    region: string,
+  ): Promise<MatchDetails> {
     const url = `https://${region}.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${API_KEY}`;
 
     return FetchRequest<MatchDetails>(url);
