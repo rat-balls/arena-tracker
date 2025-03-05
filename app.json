@@ -34,18 +34,7 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      [
-        "expo-font",
-        {
-          "fonts": [
-            "./src/assets/fonts/Spiegel.ttf",
-            "./src/assets/fonts/Beaufort Bold.ttf.ttf",
-            "./src/assets/fonts/Beaufort BoldItalic.ttf.ttf",
-            "./src/assets/fonts/Beaufort MediumItalic.ttf.ttf",
-            "./src/assets/fonts/Beaufort Regular.ttf.ttf"
-          ]
-        }
-      ]
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

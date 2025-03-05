@@ -22,6 +22,8 @@ enum Filter {
 interface ChampionType {
   key: string;
   name: string;
+  played: boolean;
+  god: boolean;
 }
 
 export default function ChampionListComponent() {
@@ -29,14 +31,20 @@ export default function ChampionListComponent() {
     {
       key: "266",
       name: "Aatrox",
+      played: true,
+      god: true,
     },
     {
       key: "103",
       name: "Ahri",
+      played: true,
+      god: false,
     },
     {
       key: "84",
       name: "Akali",
+      played: false,
+      god: false,
     },
   ]);
   const [search, setSearch] = useState("");
@@ -102,8 +110,18 @@ export default function ChampionListComponent() {
                   style={s.filter}
                   selectedValue={filter}
                   onValueChange={(itemValue, itemIndex) => setFilter(itemValue)}
+                  mode="dropdown"
                 >
-                  <Picker.Item label="Neither" value={Filter.NEITHER} />
+                  <Picker.Item
+                    style={s.filterItem}
+                    label="All Champions"
+                    value={Filter.DISABLED}
+                  />
+                  <Picker.Item
+                    style={s.filterItem}
+                    label="Neither"
+                    value={Filter.NEITHER}
+                  />
                   <Picker.Item label="Played" value={Filter.PLAYED} />
                   <Picker.Item label="God" value={Filter.GOD} />
                 </Picker>
@@ -114,9 +132,21 @@ export default function ChampionListComponent() {
       </View>
       <View style={s.scroll}>
         <FlatList
-          data={champions.filter((el) =>
-            el.name.toLowerCase().includes(search.toLowerCase()),
-          )}
+          data={champions
+            .filter((el) =>
+              filter === Filter.DISABLED
+                ? el.name === el.name
+                : filter === Filter.GOD
+                  ? el.god
+                  : filter === Filter.PLAYED
+                    ? el.played
+                    : filter === Filter.NEITHER
+                      ? !el.played
+                      : !el.god,
+            )
+            .filter((el) =>
+              el.name.toLowerCase().includes(search.toLowerCase()),
+            )}
           renderItem={({ item }) => (
             <ChampionListItemComponent id={item.key} name={item.name} />
           )}
@@ -150,7 +180,7 @@ const s = StyleSheet.create({
     width: "85%",
   },
   searchBorder: {
-    flex: 3,
+    flex: 2,
     marginRight: 5,
     justifyContent: "center",
     borderWidth: 1,
@@ -166,7 +196,14 @@ const s = StyleSheet.create({
     marginRight: 2,
   },
   filter: {
-    backgroundColor: "blue",
+    overflow: "visible",
+    height: "100%",
+    width: "100%",
+    color: "#A09B8C",
+    fontFamily: "Spiegel SemiBold",
+  },
+  filterItem: {
+    overflow: "visible",
     height: "100%",
     width: "100%",
   },
@@ -174,6 +211,7 @@ const s = StyleSheet.create({
     flex: 2,
     justifyContent: "center",
     borderWidth: 1,
+    height: "100%",
     borderColor: "#010A13",
   },
   filterBackground: {
