@@ -2088,6 +2088,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-async-storage/async-storage@npm:1.23.1":
+  version: 1.23.1
+  resolution: "@react-native-async-storage/async-storage@npm:1.23.1"
+  dependencies:
+    merge-options: "npm:^3.0.4"
+  peerDependencies:
+    react-native: ^0.0.0-0 || >=0.60 <1.0
+  checksum: 10c0/6cfdcab91f0e04f80f4aa91397eb4aedcd1124bf2a997cb730c7f2c70dad75d2aa0ca0f41576ed4e34544a1f79e090169f566366c32a89a41b74bf74bea1c1db
+  languageName: node
+  linkType: hard
+
 "@react-native/assets-registry@npm:0.76.7":
   version: 0.76.7
   resolution: "@react-native/assets-registry@npm:0.76.7"
@@ -3148,6 +3159,51 @@ __metadata:
   checksum: 10c0/32afb4d6fd66596119d37bc697353a29e0496ffcceddc60abfc954dbd063d45e4b9875b05ad413d8b0ab05e800bcb0decfb32c8c22fd1e55b5c9fba8936f0e86
   languageName: node
   linkType: hard
+
+"arena-tracker@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "arena-tracker@workspace:."
+  dependencies:
+    "@babel/core": "npm:^7.25.2"
+    "@expo/vector-icons": "npm:^14.0.2"
+    "@react-native-async-storage/async-storage": "npm:1.23.1"
+    "@react-navigation/bottom-tabs": "npm:^7.2.0"
+    "@react-navigation/native": "npm:^7.0.14"
+    "@types/jest": "npm:^29.5.12"
+    "@types/react": "npm:~18.3.12"
+    "@types/react-test-renderer": "npm:^18.3.0"
+    eslint: "npm:^8.57.0"
+    eslint-config-expo: "npm:~8.0.1"
+    eslint-config-prettier: "npm:^10.0.2"
+    eslint-plugin-prettier: "npm:^5.2.3"
+    expo: "npm:~52.0.37"
+    expo-blur: "npm:~14.0.3"
+    expo-constants: "npm:~17.0.7"
+    expo-font: "npm:~13.0.4"
+    expo-haptics: "npm:~14.0.1"
+    expo-linking: "npm:~7.0.5"
+    expo-router: "npm:~4.0.17"
+    expo-splash-screen: "npm:~0.29.22"
+    expo-status-bar: "npm:~2.0.1"
+    expo-symbols: "npm:~0.2.2"
+    expo-system-ui: "npm:~4.0.8"
+    expo-web-browser: "npm:~14.0.2"
+    jest: "npm:^29.2.1"
+    jest-expo: "npm:~52.0.4"
+    prettier: "npm:^3.5.3"
+    react: "npm:18.3.1"
+    react-dom: "npm:18.3.1"
+    react-native: "npm:0.76.7"
+    react-native-gesture-handler: "npm:~2.20.2"
+    react-native-reanimated: "npm:~3.16.1"
+    react-native-safe-area-context: "npm:4.12.0"
+    react-native-screens: "npm:~4.4.0"
+    react-native-web: "npm:~0.19.13"
+    react-native-webview: "npm:13.12.5"
+    react-test-renderer: "npm:18.3.1"
+    typescript: "npm:^5.3.3"
+  languageName: unknown
+  linkType: soft
 
 "arg@npm:^5.0.2":
   version: 5.0.2
@@ -6771,6 +6827,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-plain-obj@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "is-plain-obj@npm:2.1.0"
+  checksum: 10c0/e5c9814cdaa627a9ad0a0964ded0e0491bfd9ace405c49a5d63c88b30a162f1512c069d5b80997893c4d0181eadc3fed02b4ab4b81059aba5620bfcdfdeb9c53
+  languageName: node
+  linkType: hard
+
 "is-plain-object@npm:^2.0.4":
   version: 2.0.4
   resolution: "is-plain-object@npm:2.0.4"
@@ -8137,6 +8200,15 @@ __metadata:
   version: 6.0.0
   resolution: "memoize-one@npm:6.0.0"
   checksum: 10c0/45c88e064fd715166619af72e8cf8a7a17224d6edf61f7a8633d740ed8c8c0558a4373876c9b8ffc5518c2b65a960266adf403cc215cb1e90f7e262b58991f54
+  languageName: node
+  linkType: hard
+
+"merge-options@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "merge-options@npm:3.0.4"
+  dependencies:
+    is-plain-obj: "npm:^2.1.0"
+  checksum: 10c0/02b5891ceef09b0b497b5a0154c37a71784e68ed71b14748f6fd4258ffd3fe4ecd5cb0fd6f7cae3954fd11e7686c5cb64486daffa63c2793bbe8b614b61c7055
   languageName: node
   linkType: hard
 
@@ -11207,50 +11279,6 @@ __metadata:
   checksum: 10c0/83326545ea1aecd6261030568b6191ccfa4cb6aa61d9ea41746a52479f50017a78b77e4725fbbc207c5df841ffa66a773c5ac33636e95c7ab94fe7e0379ae5c7
   languageName: node
   linkType: hard
-
-"arena-tracker@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "arena-tracker@workspace:."
-  dependencies:
-    "@babel/core": "npm:^7.25.2"
-    "@expo/vector-icons": "npm:^14.0.2"
-    "@react-navigation/bottom-tabs": "npm:^7.2.0"
-    "@react-navigation/native": "npm:^7.0.14"
-    "@types/jest": "npm:^29.5.12"
-    "@types/react": "npm:~18.3.12"
-    "@types/react-test-renderer": "npm:^18.3.0"
-    eslint: "npm:^8.57.0"
-    eslint-config-expo: "npm:~8.0.1"
-    eslint-config-prettier: "npm:^10.0.2"
-    eslint-plugin-prettier: "npm:^5.2.3"
-    expo: "npm:~52.0.37"
-    expo-blur: "npm:~14.0.3"
-    expo-constants: "npm:~17.0.7"
-    expo-font: "npm:~13.0.4"
-    expo-haptics: "npm:~14.0.1"
-    expo-linking: "npm:~7.0.5"
-    expo-router: "npm:~4.0.17"
-    expo-splash-screen: "npm:~0.29.22"
-    expo-status-bar: "npm:~2.0.1"
-    expo-symbols: "npm:~0.2.2"
-    expo-system-ui: "npm:~4.0.8"
-    expo-web-browser: "npm:~14.0.2"
-    jest: "npm:^29.2.1"
-    jest-expo: "npm:~52.0.4"
-    prettier: "npm:^3.5.3"
-    react: "npm:18.3.1"
-    react-dom: "npm:18.3.1"
-    react-native: "npm:0.76.7"
-    react-native-gesture-handler: "npm:~2.20.2"
-    react-native-reanimated: "npm:~3.16.1"
-    react-native-safe-area-context: "npm:4.12.0"
-    react-native-screens: "npm:~4.4.0"
-    react-native-web: "npm:~0.19.13"
-    react-native-webview: "npm:13.12.5"
-    react-test-renderer: "npm:18.3.1"
-    typescript: "npm:^5.3.3"
-  languageName: unknown
-  linkType: soft
 
 "test-exclude@npm:^6.0.0":
   version: 6.0.0
