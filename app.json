@@ -10,7 +10,11 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "bundleIdentifier": "com.dingodeladouga.arenatracker",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -48,7 +52,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "ac13fd88-67f4-4d3b-8f86-d18de7720eeb"
+        "projectId": "7cb1dee6-ecab-46e4-8878-c9e7e4d2321b"
       }
     }
   }

@@ -105,12 +105,17 @@ export default function ChampionListComponent() {
                 filterFocus ? ["#010A13", "#1E282D"] : ["#0f171f", "#0f171f"]
               }
             >
-              <TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  setSearchFocus(false);
+                }}
+              >
                 <Picker
                   style={s.filter}
                   selectedValue={filter}
                   onValueChange={(itemValue, itemIndex) => setFilter(itemValue)}
                   mode="dropdown"
+                  dropdownIconColor="#C8AA6E"
                 >
                   <Picker.Item
                     style={s.filterItem}
@@ -122,8 +127,16 @@ export default function ChampionListComponent() {
                     label="Neither"
                     value={Filter.NEITHER}
                   />
-                  <Picker.Item label="Played" value={Filter.PLAYED} />
-                  <Picker.Item label="God" value={Filter.GOD} />
+                  <Picker.Item
+                    label="Played"
+                    style={s.filterItem}
+                    value={Filter.PLAYED}
+                  />
+                  <Picker.Item
+                    label="God"
+                    style={s.filterItem}
+                    value={Filter.GOD}
+                  />
                 </Picker>
               </TouchableWithoutFeedback>
             </LinearGradient>
@@ -132,21 +145,9 @@ export default function ChampionListComponent() {
       </View>
       <View style={s.scroll}>
         <FlatList
-          data={champions
-            .filter((el) =>
-              filter === Filter.DISABLED
-                ? el.name === el.name
-                : filter === Filter.GOD
-                  ? el.god
-                  : filter === Filter.PLAYED
-                    ? el.played
-                    : filter === Filter.NEITHER
-                      ? !el.played
-                      : !el.god,
-            )
-            .filter((el) =>
-              el.name.toLowerCase().includes(search.toLowerCase()),
-            )}
+          data={champions.filter((el) =>
+            el.name.toLowerCase().includes(search.toLowerCase()),
+          )}
           renderItem={({ item }) => (
             <ChampionListItemComponent id={item.key} name={item.name} />
           )}
@@ -201,11 +202,16 @@ const s = StyleSheet.create({
     width: "100%",
     color: "#A09B8C",
     fontFamily: "Spiegel SemiBold",
+    letterSpacing: 1,
   },
   filterItem: {
     overflow: "visible",
     height: "100%",
     width: "100%",
+    color: "#A09B8C",
+    backgroundColor: "#0f171f",
+    fontFamily: "Spiegel SemiBold",
+    letterSpacing: 1,
   },
   filterBorder: {
     flex: 2,

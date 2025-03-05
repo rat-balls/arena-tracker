@@ -45,6 +45,7 @@ export default function Index() {
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView behavior="padding">
+        <Text>Email</Text>
         <TextInput
           style={styles.input}
           value={email}

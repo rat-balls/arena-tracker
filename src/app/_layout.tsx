@@ -15,17 +15,6 @@ export default function RootLayout() {
     "Beaufort MediumItalic": require("../assets/fonts/Beaufort MediumItalic.ttf"),
     "Beaufort Regular": require("../assets/fonts/Beaufort Regular.ttf"),
   });
-
-  useEffect(() => {
-    if (loaded || error) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded, error]);
-
-  if (!loaded && !error) {
-    return null;
-  }
-  
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
   const router = useRouter();
@@ -43,15 +32,25 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+  useEffect(() => {
     if (initializing) return;
     const inAuthGroup = segments[0] === "(auth)";
 
     if (user && !inAuthGroup) {
       router.replace("/(auth)/home");
     } else if (!user && inAuthGroup) {
-      router.replace("/");
+      router.replace("/(auth)/home");
     }
   }, [user, initializing]);
+
+  if (!loaded && !error) {
+    return null;
+  }
 
   if (initializing)
     return (
