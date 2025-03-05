@@ -9,7 +9,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "googleServicesFile": "./google-services.json"
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +19,6 @@
       },
       "package": "com.dingodeladouga.arenatracker",
       "googleServicesFile": "./google-services.json"
-
     },
     "web": {
       "bundler": "metro",
