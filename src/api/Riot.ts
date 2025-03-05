@@ -1,16 +1,25 @@
 const API_KEY = process.env.EXPO_PUBLIC_RIOT_API;
+const RIOT_CDN_VERSION = process.env.EXPO_PUBLIC_RIOT_CDN_VERSION;
+
 const GAME_MODE = "CHERRY";
 
 if (API_KEY === undefined || API_KEY.length === 0) {
   throw new Error("Not riot api key in env");
 }
 
+if (RIOT_CDN_VERSION === undefined || RIOT_CDN_VERSION.length === 0) {
+  throw new Error("No riot cdn version in env");
+}
+
+//#region Account
 export interface RiotAccount {
   puuid: string;
   gameName: string;
   tagLine: string;
 }
+//#endregion
 
+//#region Match
 export interface MatchParticipant {
   puuid: string;
   championName: string;
@@ -24,6 +33,24 @@ export interface MatchInfo {
 export interface MatchDetails {
   info: MatchInfo;
 }
+//#endregion
+
+//#region Champion
+export interface ChampionInfo {
+  id: string;
+  name: string;
+  title: string;
+  image: {
+    full: string;
+  };
+  tags: string[];
+  partype: string;
+}
+
+export interface ChampionsList {
+  data: Record<string, ChampionInfo>;
+}
+//#endregion
 
 /**
  * Helper function for making a fetch request, handles fetch error and json parsing error
@@ -43,7 +70,9 @@ async function FetchRequest<T>(url: string) {
             })
             .catch((err) => reject("ERROR PARSING JSON " + err));
         } else {
-          reject("RESPONSE DIDN'T RETURN STATUS OK: " + response.status);
+          reject(
+            "RESPONSE DIDN'T RETURN STATUS OK: " + response.status + " " + url,
+          );
         }
       })
       .catch((err) => reject("ERROR FETCHING " + err));
@@ -102,6 +131,37 @@ export class RiotService {
     const url = `https://${region}.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${API_KEY}`;
 
     return FetchRequest<MatchDetails>(url);
+  }
+
+  /**
+   * Fetch list of champions
+   * @param languageCode Language code, ex: en_GB, fr_FR
+   * @returns Promise of champion list
+   */
+  public static FetchChampions(languageCode: string): Promise<ChampionsList> {
+    const url = `https://ddragon.leagueoflegends.com/cdn/${RIOT_CDN_VERSION}/data/${languageCode}/champion.json`;
+
+    return FetchRequest<ChampionsList>(url);
+  }
+
+  // public static FetchChampion(
+  //   languageCode: string,
+  //   championName: string,
+  // ): Promise<object> {
+  //   const url = `https://ddragon.leagueoflegends.com/cdn/${RIOT_CDN_VERSION}/data/${languageCode}/champion/${championName}.json`;
+
+  //   return FetchRequest<object>(url);
+  // }
+
+  /**
+   * Get full url of the champion icon from the image file
+   * @param championImageFull The image file of the champion icon
+   * @returns Full URL of the champion image icon
+   */
+  public static GetChampionImage(championImageFull: string): string {
+    const url = `https://ddragon.leagueoflegends.com/cdn/${RIOT_CDN_VERSION}/img/champion/${championImageFull}`;
+
+    return url;
   }
 
   /*
