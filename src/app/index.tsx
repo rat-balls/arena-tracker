@@ -1,15 +1,15 @@
 import { useState } from "react";
 import {
+  ActivityIndicator,
   Button,
   KeyboardAvoidingView,
   StyleSheet,
+  Text,
   TextInput,
   View,
-  Text,
-  ActivityIndicator,
 } from "react-native";
-import auth from "@react-native-firebase/auth";
-import { FirebaseError } from "@firebase/util";
+import { LoginUser, RegisterUser } from "../firebase/firebase";
+
 export default function Index() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,11 +18,10 @@ export default function Index() {
   const signUp = async () => {
     setLoading(true);
     try {
-      await auth().createUserWithEmailAndPassword(email, password);
+      await RegisterUser(email, password);
       alert("Account created !");
-    } catch (e: any) {
-      const err = e as FirebaseError;
-      alert("Registration failed: " + err.message);
+    } catch (e) {
+      alert("Registration failed: " + e);
     } finally {
       setLoading(false);
     }
@@ -31,11 +30,10 @@ export default function Index() {
   const signIn = async () => {
     setLoading(true);
     try {
-      await auth().signInWithEmailAndPassword(email, password);
+      await LoginUser(email, password);
       alert("You are logged in");
-    } catch (e: any) {
-      const err = e as FirebaseError;
-      alert("Login failed: " + err.message);
+    } catch (e) {
+      alert("Login failed: " + e);
     } finally {
       setLoading(false);
     }
