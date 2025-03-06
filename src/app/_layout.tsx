@@ -1,11 +1,16 @@
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { RelativePathString, Stack, useRouter, useSegments } from "expo-router";
-import { useEffect, useState } from "react";
+import {
+  RelativePathString,
+  Stack,
+  useRootNavigationState,
+  useRouter,
+  useSegments,
+} from "expo-router";import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { auth } from "../firebase/firebase";
 import { persistor, store } from "../state/store";
 
 export default function RootLayout() {
@@ -19,19 +24,19 @@ export default function RootLayout() {
     "Beaufort Regular": require("../assets/fonts/Beaufort Regular.ttf"),
   });
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
+  const [isLogged, setLogged] = useState<boolean>();
   const router = useRouter();
   const segments = useSegments();
 
-  const onAuthStateChange = (user: FirebaseAuthTypes.User | null) => {
-    console.log("onAuthStateChange", user);
-    setUser(user);
-    if (initializing) setInitializing(false);
-  };
+  const rootNavigationState = useRootNavigationState();
+  // Used to wait for the router to initialize
+  const navigatorReady = rootNavigationState?.key != null;
 
   useEffect(() => {
-    return auth().onAuthStateChanged(onAuthStateChange);
-  });
+    auth.onAuthStateChanged((user) => {
+      setLogged(user != null);
+      setInitializing(false);
+    });
 
   useEffect(() => {
     if (loaded || error) {
@@ -40,16 +45,16 @@ export default function RootLayout() {
   }, [loaded, error]);
 
   useEffect(() => {
-    if (initializing) return;
+    if (initializing || !navigatorReady) return;
     const inAuthGroup = (segments[0] as string) === "(auth)";
 
-    if (user && !inAuthGroup) {
+    if (isLogged && !inAuthGroup) {
       const authHome = "/(auth)/home" as RelativePathString;
       router.replace(authHome);
-    } else if (!user && inAuthGroup) {
+    } else if (!isLogged && inAuthGroup) {
       router.replace("/");
     }
-  }, [user, initializing, segments, router]);
+  }, [navigatorReady, isLogged, initializing, segments, router]);
 
   if (!loaded && !error) {
     return null;

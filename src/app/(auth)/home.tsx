@@ -1,40 +1,23 @@
-import {
-  KeyboardAvoidingView,
-  Platform,
-  StatusBar,
-  StyleSheet,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import ChampionListComponent from "../../components/championListComponent";
+import { RelativePathString, useRouter } from "expo-router";
+import { Button, View } from "react-native";
+import { auth } from "../../firebase/firebase";
+export default function Page() {
+  const router = useRouter();
 
-export default function Index() {
+  const account = "account" as RelativePathString;
+
+  const signOut = () => {
+    auth.signOut();
+  };
+
+  const redirectAccount = () => {
+    router.replace(account);
+  };
+
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1 }}>
-        <StatusBar backgroundColor="white" />
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          enabled
-          style={{ flex: 1 }}
-        >
-          <LinearGradient
-            colors={["#091428", "#0A1428"]}
-            style={s.background}
-          />
-          <ChampionListComponent />
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <View>
+      <Button title={"Sign out"} onPress={signOut} />
+      <Button title={"Search account"} onPress={redirectAccount} />
+    </View>
   );
 }
-
-const s = StyleSheet.create({
-  background: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    height: "100%",
-  }
-});

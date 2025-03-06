@@ -1,13 +1,34 @@
-# Welcome to your Expo app 👋
+# Arena Tracker
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Arena Tracker is an application that allows League of Legends players to track the champions with whom they have won a game in the Arena game mode. This tracking is done using [Riot Games](https://developer.riotgames.com/docs/lol) API.
+
+## Built with
+
+![Expo](https://img.shields.io/badge/Expo-E976?style=for-the-badge&logoColor=white) 
+
+## Team
+
+- Ethan DELALANDE
+- Jathurshan SIVANANTHAN
+- Noé HEY-LE MADEC
 
 ## Get started
+
+#### Download the apk at (le chemin de l'apk)
+
+or
+
+#### Install locally
 
 1. Install dependencies
 
    ```bash
    npm install
+   ```
+   or
+
+   ```bash
+   yarn install
    ```
 
 2. Start the app
@@ -15,36 +36,20 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    ```bash
     npx expo start
    ```
+   
+3. Choose Expo Go or create development build
 
-In the output, you'll find options to open the app in a
+- #### Expo Go
+scan the QR Code and launch on Expo Go (app)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- #### Development build
+   ```bash
+  npx expo install expo-dev-client
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+  eas build --profile development --platform android
+   ```
 
-## Get a fresh project
+## Features
 
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Track winning champions in the Arena game mode.
+- Add accounts in favorite for tracking them (and import pictures for modify their profile picture).
