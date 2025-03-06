@@ -14,9 +14,18 @@ const Layout = () => {
         }}
       />
       <Tabs.Screen
+        name="account"
+        options={{
+          title: "Favoris",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="heart" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="readme"
         options={{
-          title: "Readme",
+          title: "About",
           tabBarIcon: ({ color }) => (
             <FontAwesome size={28} name="file" color={color} />
           ),
