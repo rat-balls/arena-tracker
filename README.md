@@ -1,6 +1,10 @@
-# Welcome to your Expo app 👋
+# Arena Tracker
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Arena Tracker is an application that allows League of Legends players to track the champions with whom they have won a game in the Arena game mode. This tracking is done using [Riot Games](https://developer.riotgames.com/docs/lol) API.
+
+## Build with
+
+https://img.shields.io/badge/any_text-you_like-blue
 
 ## Get started
 
