@@ -129,12 +129,8 @@ export class RiotService {
    * @param count How many matchs to fetch
    * @returns Promise of list of Match ids
    */
-  public static FetchMatchHistory(
-    puuid: string,
-    count: number,
-  ): Promise<string[]> {
-    const start = 0;
-    const url = `https://${NEAREST_REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${RIOT_API_KEY}`;
+  public static FetchMatchHistory(puuid: string): Promise<string[]> {
+    const url = `https://${NEAREST_REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?&api_key=${RIOT_API_KEY}`;
 
     return FetchRequest<string[]>(url);
   }
@@ -200,8 +196,9 @@ export class RiotService {
     const championsGod: string[] = [];
     const championsPlayed: string[] = [];
 
-    playerMatchsDetails.forEach((matchDetails) => {
-      if (matchDetails.info.gameMode !== gameMode) return;
+    for (let i = 0; i < playerMatchsDetails.length; i++) {
+      const matchDetails = playerMatchsDetails[i];
+      if (matchDetails.info.gameMode === gameMode) continue;
 
       const participant = matchDetails.info.participants.filter(
         (p) => p.puuid === puuid,
@@ -215,7 +212,7 @@ export class RiotService {
       } else {
         championsPlayed.push(champion);
       }
-    });
+    }
 
     return [championsGod, championsPlayed];
   }
