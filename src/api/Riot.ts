@@ -2,7 +2,7 @@ import { RIOT_API_KEY, RIOT_CDN_VERSION } from "../config/env";
 
 const GAME_MODE = "CHERRY";
 
-const REQUEST_COOLDOWN = 45e3; // eX = *10^X
+const REQUEST_COOLDOWN = 3e3; // eX = *10^X
 const WaitingRequests: Record<string, boolean> = {};
 let LAST_REQUEST = 0; // UNIX
 
@@ -52,17 +52,19 @@ export interface ChampionsList {
 }
 
 export interface ChampionMastery {
-  championPointsUntilNextLevel: number;
-  chestGranted: boolean;
   championId: number;
-  lastPlayTime: number;
   championLevel: number;
+
   championPoints: number;
   championPointsSinceLastLevel: number;
-  markRequiredForNextLevel: number;
+  championPointsUntilNextLevel: number;
   championSeasonMilestone: number;
+  markRequiredForNextLevel: number;
+
+  lastPlayTime: number;
+
+  chestGranted: boolean;
   tokensEarned: number;
-  milestoneGrades: string[];
 }
 
 //#endregion
@@ -73,18 +75,17 @@ export interface ChampionMastery {
  * @param url
  * @returns A promise of type T
  */
-async function FetchRequest<T>(url: string) {
+async function FetchRequest<T>(url: string, nocooldown = false) {
   return new Promise<T>(async (resolve, reject) => {
     const now = Date.now();
-    if (now - LAST_REQUEST < REQUEST_COOLDOWN) {
-      if (WaitingRequests[url] !== true) return reject("TOO MUCH CALLS");
+    if (now - LAST_REQUEST < REQUEST_COOLDOWN && !nocooldown) {
+      if (WaitingRequests[url] === true) return reject("TOO MUCH CALLS");
       WaitingRequests[url] = true;
       await delay(REQUEST_COOLDOWN);
       WaitingRequests[url] = false;
     } else {
       LAST_REQUEST = now;
     }
-    console.log("GET ", url);
 
     fetch(url)
       .then((response) => {
@@ -159,7 +160,7 @@ export class RiotService {
   public static FetchChampions(languageCode: string): Promise<ChampionsList> {
     const url = `https://ddragon.leagueoflegends.com/cdn/${RIOT_CDN_VERSION}/data/${languageCode}/champion.json`;
 
-    return FetchRequest<ChampionsList>(url);
+    return FetchRequest<ChampionsList>(url, true);
   }
 
   // public static FetchChampion(

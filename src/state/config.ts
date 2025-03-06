@@ -6,4 +6,5 @@ const ROOT_KEY = "root";
 export const persistConfig = {
   key: ROOT_KEY,
   storage: AsyncStorage,
+  blacklist: ["selection"],
 };

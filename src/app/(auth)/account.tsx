@@ -1,28 +1,49 @@
 import { ChampionMastery, RiotAccount, RiotService } from "@/src/api/Riot";
-import { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, TextInput, View } from "react-native";
+import { useAppDispatch, useAppSelector } from "@/src/state/hooks";
+import { followProfile, selectFollowedProfiles, unfollowProfile } from "@/src/state/slices/profileSlices";
+import React, { useEffect, useMemo, useState } from "react";
+import { Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function Page() {
+  const followProfiles = useAppSelector(selectFollowedProfiles);
+  const dispatch = useAppDispatch();
   const [gameName, setGameName] = useState("");
   const [tagLine, setTagLine] = useState("");
 
   const [account, setAccount] = useState<RiotAccount | undefined>();
-
+  const [region, setRegion] = useState("euw1");
+  
   const [championsMasteries, setChampionsMasteries] = useState<
     ChampionMastery[]
   >([]);
+
+  const isFavorite = useMemo<boolean>(() => {
+    if (account === undefined) return false;
+    return followProfiles.find(({puuid}) => puuid === account.puuid) != undefined
+  }, [account])
+
+  const toogleFavorite = () => {
+    if (account === undefined) return;
+    if (isFavorite) {
+      dispatch(unfollowProfile(account))
+    } else {
+      dispatch(followProfile(account));
+    }
+  }
 
   // const registeredPlayerInfos = useAppSelector(selectRegisteredPlayerInfos);
   // const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (account === undefined) return;
-    RiotService.FetchChampionsMastery(account.puuid)
-      .then(console.log)
-      .catch(console.error);
+    RiotService.FetchChampionsMastery(account.puuid, region)
+      .then(a => {
+        console.log(a[0]);
+        setChampionsMasteries(a)
+      })
   }, [account]);
 
-  useEffect(() => {
+  const fetchAccount = () => {
     if (account === undefined) {
       // const key = gameName + tagLine;
       // const cachedAccount = registeredPlayerInfos[key];
@@ -35,12 +56,12 @@ export default function Page() {
         .then((user) => {
           setAccount(user);
           // dispatch(registerPlayerInfo(user));
-          console.log("fetched new, adding to cache");
+          // console.log("fetched new, adding to cache");
         })
         .catch(() => setAccount(undefined));
       // }
     }
-  }, [gameName, tagLine, account]);
+  }
 
   return (
     <View>
@@ -56,6 +77,11 @@ export default function Page() {
         <Text>Tag line</Text>
         <TextInput placeholder="6969" onChangeText={setTagLine}></TextInput>
       </View>
+      <View>
+        <Text>Region</Text>
+        <TextInput placeholder="euw1" onChangeText={setRegion} defaultValue="euw1" />
+      </View>
+      <Button title={"Search player"} onPress={fetchAccount} />
       <View>
         {account === undefined ? null : (
           <>
@@ -75,8 +101,10 @@ export default function Page() {
                 <Text style={styles.username}>
                   {account.gameName}#{account.tagLine}
                 </Text>
+                <TouchableOpacity onPress={toogleFavorite}>
+                  <Image source={isFavorite ? require("../../assets/images/favorite.png") : require("../../assets/images/not_favorite.png")} style={styles.favoriteIcon} />
+                </TouchableOpacity>
               </View>
-              <Text>PUUID: {account.puuid}</Text>
             </View>
           </>
         )}
@@ -107,4 +135,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
   },
+  favoriteIcon: {
+    width: 30,
+    height: 30,
+  }
 });
