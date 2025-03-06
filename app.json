@@ -27,6 +27,10 @@
     "plugins": [
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
+      "expo-image-picker",
+      {
+        "photosPermission": "The app accesses your photos to let you share them with your friends."
+      },
       "expo-router",
       [
         "expo-splash-screen",
