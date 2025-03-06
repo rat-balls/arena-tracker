@@ -89,7 +89,7 @@ export default function Index() {
             onChangeText={setEmail}
             autoCapitalize="none"
             keyboardType={"email-address"}
-            placeholder={"email"}
+            placeholder={"Email"}
             placeholderTextColor="#FFF"
           />
           <TextInput
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 34,
+    fontSize: 32,
     fontFamily: "League",
     color: "white",
     textAlign: "center",
