@@ -1,3 +1,5 @@
+import { useFonts } from "expo-font";
+import React, { useState } from "react";
 import {
   Alert,
   StyleSheet,
@@ -6,10 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useFonts } from "expo-font";
-import { ChampionMastery, RiotAccount, RiotService } from "@/src/api/Riot";
-import AccountCard from "@/src/components/accountcard";
+import { RiotAccount, RiotService } from "../../api/Riot";
+import AccountCard from "../../components/accountcard";
 let customFonts = {
   League: require("../../assets/fonts/League.otf"),
 };
@@ -19,42 +19,15 @@ export default function Searchaccount() {
   const [tagLine, setTagLine] = useState("");
 
   const [account, setAccount] = useState<RiotAccount | undefined>();
-  const [region, setRegion] = useState("euw1");
   useFonts(customFonts);
 
-  const [championsMasteries, setChampionsMasteries] = useState<
-    ChampionMastery[]
-  >([]);
-
-  useEffect(() => {
-    if (account === undefined) return;
-    RiotService.FetchChampionsMastery(account.puuid, region).then((a) => {
-      console.log(a[0]);
-      setChampionsMasteries(a);
-    });
-  }, [account]);
-
   const fetchAccount = () => {
-    if (account === undefined) {
-      // const key = gameName + tagLine;
-      // const cachedAccount = registeredPlayerInfos[key];
-      // console.log(cachedAccount);
-      // if (cachedAccount !== undefined) {
-      //   setAccount(cachedAccount);
-      //   console.log("found in cache");
-      // } else {
-      RiotService.FetchAccountInfo(gameName, tagLine)
-        .then((user) => {
-          setAccount(user);
-          // dispatch(registerPlayerInfo(user));
-          // console.log("fetched new, adding to cache");
-        })
-        .catch((e) => {
-          Alert.alert("Account not found!");
-          setAccount(undefined);
-        });
-      // }
-    }
+    RiotService.FetchAccountInfo(gameName, tagLine)
+      .then(setAccount)
+      .catch(() => {
+        Alert.alert("Account not found!");
+        setAccount(undefined);
+      });
   };
   return (
     <View style={styles.container}>
@@ -64,7 +37,7 @@ export default function Searchaccount() {
           <Text style={styles.libelle}>Game name</Text>
           <TextInput
             style={styles.input}
-            placeholder="e.g: supernoob69"
+            placeholder="supernoob69"
             placeholderTextColor="#FFF"
             onChangeText={setGameName}
           />
@@ -77,17 +50,6 @@ export default function Searchaccount() {
             placeholder="#"
             placeholderTextColor="#FFFF"
             onChangeText={setTagLine}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.libelle}>Region</Text>
-          <TextInput
-            placeholder="euw1"
-            placeholderTextColor="#C89B3C"
-            onChangeText={setRegion}
-            defaultValue="euw1"
-            style={styles.input}
           />
         </View>
         <TouchableOpacity style={styles.btn} onPress={fetchAccount}>
