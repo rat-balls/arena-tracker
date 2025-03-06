@@ -22,6 +22,15 @@ const Layout = () => {
           ),
         }}
       />
+      <Tabs.Screen
+        name="logout"
+        options={{
+          title: "Logout",
+          tabBarIcon: () => (
+            <FontAwesome size={28} name="sign-out" color={"red"} />
+          ),
+        }}
+      />
     </Tabs>
   );
 };
