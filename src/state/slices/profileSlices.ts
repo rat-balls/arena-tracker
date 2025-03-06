@@ -5,12 +5,19 @@ import { RootState } from "../store";
 // Profile state interface
 interface ProfileStates {
   followed: RiotAccount[];
+  profilePicture: Record<string, string>;
 }
 
 // Initial value
 const initialState: ProfileStates = {
   followed: [],
+  profilePicture: {},
 };
+
+interface SetProfilePicture {
+  puuid: string;
+  imageUrl: string;
+}
 
 // Profile slice
 export const profileSlice = createSlice({
@@ -27,11 +34,15 @@ export const profileSlice = createSlice({
       if (index === -1) return;
       state.followed.splice(index, 1);
     },
+    setProfilePicture: (state, action: PayloadAction<SetProfilePicture>) => {
+      state.profilePicture[action.payload.puuid] = action.payload.imageUrl;
+    },
   },
 });
 
 // Export store slice actions
-export const { followProfile, unfollowProfile } = profileSlice.actions;
+export const { followProfile, unfollowProfile, setProfilePicture } =
+  profileSlice.actions;
 
 // Helper function for selecting followed profiles
 export const selectFollowedProfiles = (state: RootState) =>
