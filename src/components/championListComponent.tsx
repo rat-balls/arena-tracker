@@ -2,21 +2,20 @@ import {
   View,
   FlatList,
   TextInput,
+  Text,
   StyleSheet,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
+  TouchableHighlight
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ChampionListItemComponent from "./championListItemComponent";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 enum Filter {
-  DISABLED,
-  NEITHER,
-  PLAYED,
-  GOD,
+  DISABLED = "All Champions",
+  NEITHER = "Neither",
+  PLAYED = "Played",
+  GOD = "God",
 }
 
 interface ChampionType {
@@ -27,7 +26,7 @@ interface ChampionType {
 }
 
 export default function ChampionListComponent() {
-  const [champions, setChampions] = useState<ChampionType[]>([
+  const champions = [
     {
       key: "266",
       name: "Aatrox",
@@ -46,12 +45,21 @@ export default function ChampionListComponent() {
       played: false,
       god: false,
     },
-  ]);
+  ];
+
+  const inputRef = useRef<TextInput>(null);
+
   const [search, setSearch] = useState("");
   const [searchFocus, setSearchFocus] = useState(false);
 
   const [filter, setFilter] = useState(Filter.DISABLED);
   const [filterFocus, setFilterFocus] = useState(false);
+
+  function blurSearch() {
+    if (inputRef.current !== null) {
+      inputRef.current.blur();
+    }
+  }
 
   return (
     <View style={s.container}>
@@ -72,8 +80,9 @@ export default function ChampionListComponent() {
             >
               <FontAwesome size={16} name="search" color="#F0E6D2" />
               <TextInput
+                ref={inputRef}
                 onFocus={() => setSearchFocus(true)}
-                onEndEditing={() => setSearchFocus(false)}
+                onBlur={() => setSearchFocus(false)}
                 style={s.search}
                 onChangeText={setSearch}
                 value={search}
@@ -84,7 +93,10 @@ export default function ChampionListComponent() {
               ></TextInput>
               <TouchableHighlight onPress={() => setSearch("")}>
                 <FontAwesome
-                  style={{ display: search === "" ? "none" : undefined }}
+                  style={{
+                    display: search === "" ? "none" : undefined,
+                    marginLeft: -5,
+                  }}
                   size={20}
                   name="close"
                   color="#F0E6D2"
@@ -92,62 +104,160 @@ export default function ChampionListComponent() {
               </TouchableHighlight>
             </LinearGradient>
           </LinearGradient>
-          {/*Filter dropdown*/}
-          <LinearGradient
-            style={s.filterBorder}
-            colors={
-              filterFocus ? ["#785A28", "#785A28"] : ["#C8AA6E", "#785A28"]
-            }
-          >
+          <View style={{ flex: 2 }}>
+            {/*Filter dropdown*/}
             <LinearGradient
-              style={s.filterBackground}
+              style={s.filterBorder}
               colors={
-                filterFocus ? ["#010A13", "#1E282D"] : ["#0f171f", "#0f171f"]
+                filterFocus ? ["#463714", "#463714"] : ["#C8AA6E", "#785A28"]
               }
             >
-              <TouchableWithoutFeedback
+              <LinearGradient
+                style={s.filterBackground}
+                colors={
+                  filterFocus ? ["#0f171f", "#0f171f"] : ["#0f171f", "#0f171f"]
+                }
+              >
+                <TouchableHighlight
+                  onPress={() => {
+                    setFilterFocus(true);
+                    blurSearch();
+                  }}
+                >
+                  <View style={s.filter}>
+                    <Text
+                      style={[
+                        s.filterText,
+                        { color: filterFocus ? "#463714" : "#A09B8C" },
+                      ]}
+                    >
+                      {filter}
+                    </Text>
+                    <FontAwesome
+                      size={20}
+                      name="arrows-v"
+                      color={filterFocus ? "#463714" : "#C8AA6E"}
+                    />
+                  </View>
+                </TouchableHighlight>
+              </LinearGradient>
+            </LinearGradient>
+            {/*Dropdown Items*/}
+            <View
+              style={[
+                s.dropdownContainer,
+                { display: filterFocus ? undefined : "none" },
+              ]}
+            >
+              <TouchableHighlight
                 onPress={() => {
-                  setSearchFocus(false);
+                  setFilterFocus(false);
+                  blurSearch();
+                  setFilter(Filter.DISABLED);
                 }}
               >
-                <Picker
-                  style={s.filter}
-                  selectedValue={filter}
-                  onValueChange={(itemValue, itemIndex) => setFilter(itemValue)}
-                  mode="dropdown"
-                  dropdownIconColor="#C8AA6E"
-                >
-                  <Picker.Item
-                    style={s.filterItem}
-                    label="All Champions"
-                    value={Filter.DISABLED}
+                <View style={s.dropdown}>
+                  <Text style={s.dropdownText}>All Champions</Text>
+                  <FontAwesome
+                    size={20}
+                    name="check"
+                    color="#F0E6D2"
+                    style={{
+                      display: filter !== Filter.DISABLED ? "none" : undefined,
+                    }}
                   />
-                  <Picker.Item
-                    style={s.filterItem}
-                    label="Neither"
-                    value={Filter.NEITHER}
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight
+                onPress={() => {
+                  setFilterFocus(false);
+                  blurSearch();
+                  setFilter(Filter.NEITHER);
+                }}
+              >
+                <View style={s.dropdown}>
+                  <Text style={s.dropdownText}>Neither</Text>
+                  <FontAwesome
+                    size={20}
+                    name="check"
+                    color="#F0E6D2"
+                    style={{
+                      display: filter !== Filter.NEITHER ? "none" : undefined,
+                    }}
                   />
-                  <Picker.Item
-                    label="Played"
-                    style={s.filterItem}
-                    value={Filter.PLAYED}
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight
+                onPress={() => {
+                  setFilterFocus(false);
+                  blurSearch();
+                  setFilter(Filter.PLAYED);
+                }}
+              >
+                <View style={s.dropdown}>
+                  <Text style={s.dropdownText}>Played</Text>
+                  <FontAwesome
+                    size={20}
+                    name="check"
+                    color="#F0E6D2"
+                    style={{
+                      display: filter !== Filter.PLAYED ? "none" : undefined,
+                    }}
                   />
-                  <Picker.Item
-                    label="God"
-                    style={s.filterItem}
-                    value={Filter.GOD}
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight
+                onPress={() => {
+                  setFilterFocus(false);
+                  blurSearch();
+                  setFilter(Filter.GOD);
+                }}
+              >
+                <View style={s.dropdown}>
+                  <Text style={s.dropdownText}>God</Text>
+                  <FontAwesome
+                    size={20}
+                    name="check"
+                    color="#F0E6D2"
+                    style={{
+                      display: filter !== Filter.GOD ? "none" : undefined,
+                    }}
                   />
-                </Picker>
-              </TouchableWithoutFeedback>
-            </LinearGradient>
-          </LinearGradient>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </View>
         </View>
       </View>
       <View style={s.scroll}>
         <FlatList
-          data={champions.filter((el) =>
-            el.name.toLowerCase().includes(search.toLowerCase()),
-          )}
+          data={
+            filter === Filter.DISABLED
+              ? champions.filter((el) =>
+                  el.name.toLowerCase().includes(search.toLowerCase()),
+                )
+              : filter === Filter.NEITHER
+                ? champions
+                    .filter((el) =>
+                      el.name.toLowerCase().includes(search.toLowerCase()),
+                    )
+                    .filter((el) => !el.played)
+                : filter === Filter.PLAYED
+                  ? champions
+                      .filter((el) =>
+                        el.name.toLowerCase().includes(search.toLowerCase()),
+                      )
+                      .filter((el) => el.played)
+                  : filter === Filter.GOD
+                    ? champions
+                        .filter((el) =>
+                          el.name.toLowerCase().includes(search.toLowerCase()),
+                        )
+                        .filter((el) => el.god)
+                    : champions.filter((el) =>
+                        el.name.toLowerCase().includes(search.toLowerCase()),
+                      )
+          }
           renderItem={({ item }) => (
             <ChampionListItemComponent id={item.key} name={item.name} />
           )}
@@ -196,36 +306,56 @@ const s = StyleSheet.create({
     margin: 1.5, // <-- Border Width
     marginRight: 2,
   },
-  filter: {
-    overflow: "visible",
-    height: "100%",
-    width: "100%",
-    color: "#A09B8C",
-    fontFamily: "Spiegel SemiBold",
-    letterSpacing: 1,
-  },
-  filterItem: {
-    overflow: "visible",
-    height: "100%",
-    width: "100%",
-    color: "#A09B8C",
-    backgroundColor: "#0f171f",
-    fontFamily: "Spiegel SemiBold",
-    letterSpacing: 1,
-  },
   filterBorder: {
     flex: 2,
+    marginRight: 5,
     justifyContent: "center",
     borderWidth: 1,
-    height: "100%",
     borderColor: "#010A13",
   },
   filterBackground: {
     flex: 1,
-    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
     height: "100%",
     margin: 1.5, // <-- Border Width
     marginRight: 2,
+  },
+  filter: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingHorizontal: 10,
+  },
+  filterText: {
+    color: "#A09B8C",
+    fontFamily: "Beaufort Bold",
+    fontSize: 15,
+  },
+  dropdownContainer: {
+    borderWidth: 2,
+    borderColor: "#463714",
+    backgroundColor: "#010A13",
+    position: "absolute",
+    top: 49,
+    left: 1.5,
+    width: "96%",
+  },
+  dropdown: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 13,
+    paddingHorizontal: 10,
+    width: "100%",
+    borderTopColor: "#1E282D",
+    borderTopWidth: 1,
+  },
+  dropdownText: {
+    color: "#ccbf91",
+    fontFamily: "Spiegel SemiBold",
+    fontSize: 15,
   },
 });
