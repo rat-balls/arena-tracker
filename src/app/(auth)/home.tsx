@@ -17,7 +17,6 @@ export default function Page() {
   return (
     <View>
       <Button title={"Sign out"} onPress={signOut} />
-      <Button title={"Search account"} onPress={redirectAccount} />
     </View>
   );
 }
