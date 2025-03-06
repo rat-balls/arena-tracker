@@ -37,7 +37,7 @@ export default function RootLayout() {
     } else if (!isLogged && inAuthGroup) {
       router.replace("/");
     }
-  }, [navigatorReady, isLogged]);
+  }, [navigatorReady, isLogged, initializing, segments, router]);
 
   if (initializing)
     return (
