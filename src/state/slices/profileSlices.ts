@@ -25,14 +25,24 @@ export const profileSlice = createSlice({
   initialState,
   reducers: {
     followProfile: (state, action: PayloadAction<RiotAccount>) => {
-      if (state.followed.find((v) => v === action.payload) !== undefined)
+      if (
+        state.followed.find((v) => v.puuid === action.payload.puuid) !==
+        undefined
+      )
         return;
       state.followed.push(action.payload);
     },
     unfollowProfile: (state, action: PayloadAction<RiotAccount>) => {
-      const index = state.followed.findIndex((v) => v === action.payload);
+      const index = state.followed.findIndex(
+        (v) => v.puuid === action.payload.puuid,
+      );
+      console.log(index);
       if (index === -1) return;
-      state.followed.splice(index, 1);
+
+      state.followed = [
+        ...state.followed.slice(0, index),
+        ...state.followed.slice(index + 1),
+      ];
     },
     setProfilePicture: (state, action: PayloadAction<SetProfilePicture>) => {
       state.profilePicture[action.payload.puuid] = action.payload.imageUrl;

@@ -33,9 +33,9 @@ export default function Page() {
   const isFavorite = useMemo<boolean>(() => {
     if (account === undefined) return false;
     return (
-      followProfiles.find(({ puuid }) => puuid === account.puuid) != undefined
+      followProfiles.find(({ puuid }) => puuid === account.puuid) !== undefined
     );
-  }, [account]);
+  }, [account, followProfiles]);
 
   const toogleFavorite = () => {
     if (account === undefined) return;
