@@ -1,18 +1,35 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useFonts } from "expo-font";
 import React, { useMemo } from "react";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { RiotAccount } from "../api/Riot";
+import { useAppDispatch, useAppSelector } from "../state/hooks";
 import {
   followProfile,
   selectFollowedProfiles,
   unfollowProfile,
-} from "@/src/state/slices/profileSlices";
-import { useAppDispatch, useAppSelector } from "@/src/state/hooks";
-import { RiotAccount } from "@/src/api/Riot";
-import { useFonts } from "expo-font";
+} from "../state/slices/profileSlices";
 let customFonts = {
   League: require("../assets/fonts/League.otf"),
 };
 
-export default function AccountCard({ account }: RiotAccount | any) {
+interface IAccountCardProps {
+  profilePicture?: string;
+  account: RiotAccount;
+  confirmUnfollow?: boolean;
+}
+
+export default function AccountCard({
+  account,
+  profilePicture,
+  confirmUnfollow,
+}: IAccountCardProps | any) {
   const followProfiles = useAppSelector(selectFollowedProfiles);
   const dispatch = useAppDispatch();
   useFonts(customFonts);
@@ -22,10 +39,26 @@ export default function AccountCard({ account }: RiotAccount | any) {
     return (
       followProfiles.find(({ puuid }) => puuid === account.puuid) != undefined
     );
-  }, [account]);
+  }, [account, followProfile]);
 
   const toogleFavorite = () => {
-    if (account === undefined) return;
+    if (isFavorite && confirmUnfollow === true) {
+      return Alert.alert(
+        "Do you really want to unfavorite this profile ?",
+        "You will have to search for profile if you need to check the stats",
+        [
+          {
+            text: "Yep",
+            onPress: () => {
+              dispatch(unfollowProfile(account));
+            },
+          },
+          {
+            text: "Nope",
+          },
+        ],
+      );
+    }
     if (isFavorite) {
       dispatch(unfollowProfile(account));
     } else {
@@ -37,7 +70,11 @@ export default function AccountCard({ account }: RiotAccount | any) {
     <View style={styles.cardContainer}>
       <View style={styles.profileHeader}>
         <Image
-          source={require("../assets/images/default_account_icon.png")}
+          source={
+            profilePicture !== undefined
+              ? profilePicture
+              : require("../assets/images/default_account_icon.png")
+          }
           style={styles.icon}
         />
         <Text style={styles.username}>
