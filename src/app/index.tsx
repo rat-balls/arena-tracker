@@ -1,18 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 import {
+  ActivityIndicator,
   Button,
   KeyboardAvoidingView,
   StyleSheet,
+  Text,
   TextInput,
   View,
-  Text,
-  ActivityIndicator,
   ImageBackground,
   Alert,
   TouchableOpacity,
 } from "react-native";
-import auth from "@react-native-firebase/auth";
-import { FirebaseError } from "@firebase/util";
+import { LoginUser, RegisterUser } from "../firebase/firebase";
+
 import { useFonts } from "expo-font";
 let customFonts = {
   League: require("../assets/fonts/League.otf"),
@@ -42,7 +42,6 @@ export default function Index() {
 
   const register = async () => {
     setLoading(true);
-
     if (!isPasswordCorrect) {
       Alert.alert("Le mot de de passe doit faire au moins 3 caractères");
       setLoading(false);
@@ -51,11 +50,10 @@ export default function Index() {
       setLoading(false);
     } else {
       try {
-        await auth().createUserWithEmailAndPassword(email, password);
+        await RegisterUser(email, password);
         alert("Account created !");
-      } catch (e: any) {
-        const err = e as FirebaseError;
-        alert("Registration failed: " + err.message);
+      } catch (e) {
+        alert("Registration failed: " + e);
       } finally {
         setLoading(false);
       }
@@ -65,11 +63,10 @@ export default function Index() {
   const login = async () => {
     setLoading(true);
     try {
-      await auth().signInWithEmailAndPassword(email, password);
+      await LoginUser(email, password);
       alert("You are logged in");
-    } catch (e: any) {
-      const err = e as FirebaseError;
-      alert("Login failed: " + err.message);
+    } catch (e) {
+      alert("Login failed: " + e);
     } finally {
       setLoading(false);
     }

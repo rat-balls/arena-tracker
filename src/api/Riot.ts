@@ -1,15 +1,6 @@
-const API_KEY = process.env.EXPO_PUBLIC_RIOT_API;
-const RIOT_CDN_VERSION = process.env.EXPO_PUBLIC_RIOT_CDN_VERSION;
+import { RIOT_API_KEY, RIOT_CDN_VERSION } from "../config/env";
 
 const GAME_MODE = "CHERRY";
-
-if (API_KEY === undefined || API_KEY.length === 0) {
-  throw new Error("Not riot api key in env");
-}
-
-if (RIOT_CDN_VERSION === undefined || RIOT_CDN_VERSION.length === 0) {
-  throw new Error("No riot cdn version in env");
-}
 
 //#region Account
 export interface RiotAccount {
@@ -95,7 +86,7 @@ export class RiotService {
     tagLine: string,
     region: string,
   ): Promise<RiotAccount> {
-    const url = `https://${region}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${API_KEY}`;
+    const url = `https://${region}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${RIOT_API_KEY}`;
 
     return FetchRequest<RiotAccount>(url);
   }
@@ -113,7 +104,7 @@ export class RiotService {
     count: number,
   ): Promise<string[]> {
     const start = 0;
-    const url = `https://${region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${API_KEY}`;
+    const url = `https://${region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${RIOT_API_KEY}`;
 
     return FetchRequest<string[]>(url);
   }
@@ -128,7 +119,7 @@ export class RiotService {
     matchId: string,
     region: string,
   ): Promise<MatchDetails> {
-    const url = `https://${region}.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${API_KEY}`;
+    const url = `https://${region}.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${RIOT_API_KEY}`;
 
     return FetchRequest<MatchDetails>(url);
   }
