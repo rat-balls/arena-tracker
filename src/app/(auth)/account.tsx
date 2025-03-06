@@ -46,9 +46,6 @@ export default function Page() {
     }
   };
 
-  // const registeredPlayerInfos = useAppSelector(selectRegisteredPlayerInfos);
-  // const dispatch = useAppDispatch();
-
   useEffect(() => {
     if (account === undefined) return;
     RiotService.FetchChampionsMastery(account.puuid, region).then((a) => {
@@ -58,26 +55,14 @@ export default function Page() {
   }, [account]);
 
   const fetchAccount = () => {
-    if (account === undefined) {
-      // const key = gameName + tagLine;
-      // const cachedAccount = registeredPlayerInfos[key];
-      // console.log(cachedAccount);
-      // if (cachedAccount !== undefined) {
-      //   setAccount(cachedAccount);
-      //   console.log("found in cache");
-      // } else {
-      RiotService.FetchAccountInfo(gameName, tagLine)
-        .then((user) => {
-          setAccount(user);
-          // dispatch(registerPlayerInfo(user));
-          // console.log("fetched new, adding to cache");
-        })
-        .catch((e) => {
-          Alert.alert("Account not found!");
-          setAccount(undefined);
-        });
-      // }
-    }
+    RiotService.FetchAccountInfo(gameName, tagLine)
+      .then((user) => {
+        setAccount(user);
+      })
+      .catch((e) => {
+        Alert.alert("Account not found!");
+        setAccount(undefined);
+      });
   };
 
   return (
