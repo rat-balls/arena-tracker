@@ -2,6 +2,12 @@ import { RIOT_API_KEY, RIOT_CDN_VERSION } from "../config/env";
 
 const GAME_MODE = "CHERRY";
 
+const REQUEST_COOLDOWN = 45e3; // eX = *10^X
+const WaitingRequests: Record<string, boolean> = {};
+let LAST_REQUEST = 0; // UNIX
+
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
 //#region Account
 export interface RiotAccount {
   puuid: string;
@@ -41,6 +47,21 @@ export interface ChampionInfo {
 export interface ChampionsList {
   data: Record<string, ChampionInfo>;
 }
+
+export interface ChampionMastery {
+  championPointsUntilNextLevel: number;
+  chestGranted: boolean;
+  championId: number;
+  lastPlayTime: number;
+  championLevel: number;
+  championPoints: number;
+  championPointsSinceLastLevel: number;
+  markRequiredForNextLevel: number;
+  championSeasonMilestone: number;
+  tokensEarned: number;
+  milestoneGrades: string[];
+}
+
 //#endregion
 
 /**
@@ -50,7 +71,18 @@ export interface ChampionsList {
  * @returns A promise of type T
  */
 async function FetchRequest<T>(url: string) {
-  return new Promise<T>((resolve, reject) => {
+  return new Promise<T>(async (resolve, reject) => {
+    const now = Date.now();
+    if (now - LAST_REQUEST < REQUEST_COOLDOWN) {
+      if (WaitingRequests[url] !== true) return reject("TOO MUCH CALLS");
+      WaitingRequests[url] = true;
+      await delay(REQUEST_COOLDOWN);
+      WaitingRequests[url] = false;
+    } else {
+      LAST_REQUEST = now;
+    }
+    console.log("ok");
+
     fetch(url)
       .then((response) => {
         if (response.ok) {
@@ -153,6 +185,15 @@ export class RiotService {
     const url = `https://ddragon.leagueoflegends.com/cdn/${RIOT_CDN_VERSION}/img/champion/${championImageFull}`;
 
     return url;
+  }
+
+  public static FetchChampionsMastery(
+    puuid: string,
+    region: string,
+  ): Promise<ChampionMastery[]> {
+    const url = `https://${region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}?api_key=${RIOT_API_KEY}`;
+
+    return FetchRequest<ChampionMastery[]>(url);
   }
 
   /*
