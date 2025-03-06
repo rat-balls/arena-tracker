@@ -16,9 +16,7 @@
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.dingodeladouga.arenatracker",
-      "googleServicesFile": "./google-services.json"
-
+      "package": "com.dingodeladouga.arenatracker"
     },
     "web": {
       "bundler": "metro",
@@ -26,8 +24,6 @@
       "favicon": "./src/assets/images/favicon.png"
     },
     "plugins": [
-      "@react-native-firebase/app",
-      "@react-native-firebase/auth",
       "expo-router",
       [
         "expo-splash-screen",
@@ -45,9 +41,6 @@
     "extra": {
       "router": {
         "origin": false
-      },
-      "eas": {
-        "projectId": "ac13fd88-67f4-4d3b-8f86-d18de7720eeb"
       }
     }
   }
