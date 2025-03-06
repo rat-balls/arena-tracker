@@ -11,7 +11,7 @@
     "ios": {
       "supportsTablet": true,
       "googleServicesFile": "./google-services.json",
-      "bundleIdentifier": "com.dingodeladouga.arenatracker",
+      "bundleIdentifier": "com.coding.arenatracker",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -21,7 +21,7 @@
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.dingodeladouga.arenatracker",
+      "package": "com.coding.arenatracker",
       "googleServicesFile": "./google-services.json"
     },
     "web": {
