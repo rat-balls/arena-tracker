@@ -2,7 +2,7 @@ import { RiotAccount } from "@/src/api/Riot";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
-// Profile state interface
+// State interface
 interface ProfileStates {
   followed: RiotAccount[];
   profilePicture: Record<string, string>;
@@ -19,7 +19,7 @@ interface SetProfilePicture {
   imageUrl: string;
 }
 
-// Profile slice
+// Slice
 export const profileSlice = createSlice({
   name: "profiles",
   initialState,
@@ -54,7 +54,9 @@ export const profileSlice = createSlice({
 export const { followProfile, unfollowProfile, setProfilePicture } =
   profileSlice.actions;
 
-// Helper function for selecting followed profiles
+// Helper function for select
 export const selectFollowedProfiles = (state: RootState) =>
   state.profiles.followed;
+export const selectFollowedPicture = (state: RootState) =>
+  state.profiles.profilePicture;
 export default profileSlice.reducer;
