@@ -19,8 +19,7 @@ export default function RootLayout() {
   };
 
   useEffect(() => {
-    const suscriber = auth().onAuthStateChanged(onAuthStateChange);
-    return suscriber;
+    return auth().onAuthStateChanged(onAuthStateChange);
   });
 
   useEffect(() => {
@@ -33,7 +32,7 @@ export default function RootLayout() {
     } else if (!user && inAuthGroup) {
       router.replace("/");
     }
-  }, [user, initializing]);
+  }, [user, initializing, segments, router]);
 
   if (initializing)
     return (

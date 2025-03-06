@@ -18,7 +18,6 @@
       },
       "package": "com.dingodeladouga.arenatracker",
       "googleServicesFile": "./google-services.json"
-
     },
     "web": {
       "bundler": "metro",
@@ -37,7 +36,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
