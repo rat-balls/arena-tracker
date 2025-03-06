@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { FlatList, View } from "react-native";
-import { MatchDetails, RiotService } from "../..//api/Riot";
+import { FlatList, TextInput, View } from "react-native";
+import { MatchDetails, RiotService } from "../../api/Riot";
 import ChampionCard, { ChampionData } from "../../components/championcard";
 import { useAppDispatch, useAppSelector } from "../../state/hooks";
 import { selectChampions, setChampions } from "../../state/slices/dataSlices";
@@ -18,6 +18,8 @@ export default function Page() {
   const champions = useAppSelector(selectChampions);
   const dispatch = useAppDispatch();
 
+  const [championSearch, setChampionSearch] = useState("");
+
   const [matches, setMatches] = useState<MatchDetails[]>([]);
   const [godPlayedChampions, setGodPlayedChampions] = useState<
     [string[], string[]]
@@ -31,7 +33,7 @@ export default function Page() {
     });
 
     // Get matches
-    RiotService.FetchMatchHistory(account.puuid, 5).then((matchIds) => {
+    RiotService.FetchMatchHistory(account.puuid).then((matchIds) => {
       matchIds.forEach((matchId) => {
         RiotService.FetchMatchDetails(matchId).then((matchDetails) =>
           setMatches((old) => [...old, matchDetails]),
@@ -82,12 +84,24 @@ export default function Page() {
       .filter((r) => r !== undefined);
   }, [champions, masteries, godPlayedChampions]);
 
-  console.log(championMasteries[4]);
+  const championsMasteriesSearch = useMemo(
+    () =>
+      championMasteries.filter((c) =>
+        c.championName
+          .toLocaleLowerCase()
+          .startsWith(championSearch.trim().toLowerCase()),
+      ),
+    [championMasteries, championSearch],
+  );
 
   return (
     <View>
+      <TextInput
+        placeholder="Search for a champion"
+        onChangeText={setChampionSearch}
+      />
       <FlatList
-        data={championMasteries}
+        data={championsMasteriesSearch}
         renderItem={({ item }) => <ChampionCard championData={item} />}
       />
     </View>
