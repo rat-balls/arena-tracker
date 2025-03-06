@@ -1,9 +1,12 @@
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { Stack, useRouter, useSegments } from "expo-router";
-import { useEffect, useState } from "react";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { RelativePathString, Stack, useRouter, useSegments } from "expo-router";
+import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor, store } from "../state/store";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -27,8 +30,7 @@ export default function RootLayout() {
   };
 
   useEffect(() => {
-    const suscriber = auth().onAuthStateChanged(onAuthStateChange);
-    return suscriber;
+    return auth().onAuthStateChanged(onAuthStateChange);
   });
 
   useEffect(() => {
@@ -39,14 +41,15 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (initializing) return;
-    const inAuthGroup = segments[0] === "(auth)";
+    const inAuthGroup = (segments[0] as string) === "(auth)";
 
     if (user && !inAuthGroup) {
-      router.replace("/(auth)/home");
+      const authHome = "/(auth)/home" as RelativePathString;
+      router.replace(authHome);
     } else if (!user && inAuthGroup) {
       router.replace("/");
     }
-  }, [user, initializing]);
+  }, [user, initializing, segments, router]);
 
   if (!loaded && !error) {
     return null;
@@ -66,9 +69,13 @@ export default function RootLayout() {
     );
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" />
-      <Stack.Screen name="(auth)" />
-    </Stack>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="(auth)" />
+        </Stack>
+      </PersistGate>
+    </Provider>
   );
 }
