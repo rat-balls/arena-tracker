@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Button,
+  ImageBackground,
   KeyboardAvoidingView,
   StyleSheet,
   Text,
   TextInput,
-  View,
-  ImageBackground,
-  Alert,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { LoginUser, RegisterUser } from "../firebase/firebase";
 
@@ -23,7 +23,7 @@ export default function Index() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isRegistering, setIsRegistering] = useState(true);
+  const [isRegistering, setIsRegistering] = useState(false);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
 
   useFonts(customFonts);
