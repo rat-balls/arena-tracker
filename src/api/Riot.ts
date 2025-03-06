@@ -6,6 +6,9 @@ const REQUEST_COOLDOWN = 45e3; // eX = *10^X
 const WaitingRequests: Record<string, boolean> = {};
 let LAST_REQUEST = 0; // UNIX
 
+// Any region can be chosen
+const NEAREST_REGION = "europe";
+
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 //#region Account
@@ -81,7 +84,7 @@ async function FetchRequest<T>(url: string) {
     } else {
       LAST_REQUEST = now;
     }
-    console.log("ok");
+    console.log("GET ", url);
 
     fetch(url)
       .then((response) => {
@@ -110,15 +113,13 @@ export class RiotService {
    * Fetch player account details
    * @param gameName Player name in game
    * @param tagLine Player tag in game
-   * @param region Player region
    * @returns Promise of Account details
    */
   public static async FetchAccountInfo(
     gameName: string,
     tagLine: string,
-    region: string,
   ): Promise<RiotAccount> {
-    const url = `https://${region}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${RIOT_API_KEY}`;
+    const url = `https://${NEAREST_REGION}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${RIOT_API_KEY}`;
 
     return FetchRequest<RiotAccount>(url);
   }
@@ -126,17 +127,15 @@ export class RiotService {
   /**
    * Fetch player's match history
    * @param puuid Player's uuid
-   * @param region Player's region
    * @param count How many matchs to fetch
    * @returns Promise of list of Match ids
    */
   public static FetchMatchHistory(
     puuid: string,
-    region: string,
     count: number,
   ): Promise<string[]> {
     const start = 0;
-    const url = `https://${region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${RIOT_API_KEY}`;
+    const url = `https://${NEAREST_REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${RIOT_API_KEY}`;
 
     return FetchRequest<string[]>(url);
   }
@@ -144,14 +143,10 @@ export class RiotService {
   /**
    * Fetch match detail
    * @param matchId Match id
-   * @param region Match region
    * @returns Promise of match details
    */
-  public static FetchMatchDetails(
-    matchId: string,
-    region: string,
-  ): Promise<MatchDetails> {
-    const url = `https://${region}.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${RIOT_API_KEY}`;
+  public static FetchMatchDetails(matchId: string): Promise<MatchDetails> {
+    const url = `https://${NEAREST_REGION}.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${RIOT_API_KEY}`;
 
     return FetchRequest<MatchDetails>(url);
   }
@@ -187,12 +182,17 @@ export class RiotService {
     return url;
   }
 
+  /**
+   * Get champions mastery of player
+   * @param puuid Player puuid
+   * @param region Player region
+   * @returns List of champion mastery
+   */
   public static FetchChampionsMastery(
     puuid: string,
     region: string,
   ): Promise<ChampionMastery[]> {
     const url = `https://${region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}?api_key=${RIOT_API_KEY}`;
-
     return FetchRequest<ChampionMastery[]>(url);
   }
 

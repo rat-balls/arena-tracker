@@ -1,13 +1,16 @@
+import { RiotAccount } from "@/src/api/Riot";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 // Profile state interface
 interface ProfileStates {
+  registered: Record<string, RiotAccount>;
   followed: string[];
 }
 
 // Initial value
 const initialState: ProfileStates = {
+  registered: {},
   followed: [],
 };
 
@@ -27,14 +30,23 @@ export const profileSlice = createSlice({
       console.log("done");
       state.followed.splice(index, 1);
     },
+    registerPlayerInfo: (state, action: PayloadAction<RiotAccount>) => {
+      const key = action.payload.gameName + action.payload.tagLine;
+      state.registered[key] = action.payload;
+    },
   },
 });
 
 // Export store slice actions
-export const { followProfile, unfollowProfile } = profileSlice.actions;
+export const { followProfile, unfollowProfile, registerPlayerInfo } =
+  profileSlice.actions;
 
 // Helper function for selecting followed profiles
 export const selectFollowedProfiles = (state: RootState) =>
   state.profiles.followed;
+
+// Helper function for getting known ids
+export const selectRegisteredPlayerInfos = (state: RootState) =>
+  state.profiles.registered;
 
 export default profileSlice.reducer;
