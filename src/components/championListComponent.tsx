@@ -4,7 +4,7 @@ import {
   TextInput,
   Text,
   StyleSheet,
-  TouchableHighlight
+  TouchableHighlight,
 } from "react-native";
 import { useRef, useState } from "react";
 import ChampionListItemComponent from "./championListItemComponent";
@@ -20,6 +20,7 @@ enum Filter {
 
 interface ChampionType {
   key: string;
+  imgUrl: string;
   name: string;
   played: boolean;
   god: boolean;
@@ -29,18 +30,21 @@ export default function ChampionListComponent() {
   const champions = [
     {
       key: "266",
+      imgUrl: "",
       name: "Aatrox",
       played: true,
       god: true,
     },
     {
       key: "103",
+      imgUrl: "",
       name: "Ahri",
       played: true,
       god: false,
     },
     {
       key: "84",
+      imgUrl: "",
       name: "Akali",
       played: false,
       god: false,
@@ -259,7 +263,12 @@ export default function ChampionListComponent() {
                       )
           }
           renderItem={({ item }) => (
-            <ChampionListItemComponent id={item.key} name={item.name} />
+            <ChampionListItemComponent
+              imgUrl={item.imgUrl}
+              name={item.name}
+              played={item.played}
+              god={item.god}
+            />
           )}
           keyExtractor={(item) => item.key}
         />

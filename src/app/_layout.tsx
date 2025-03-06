@@ -6,7 +6,8 @@ import {
   useRootNavigationState,
   useRouter,
   useSegments,
-} from "expo-router";import { useEffect, useState } from "react";
+} from "expo-router";
+import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -37,6 +38,7 @@ export default function RootLayout() {
       setLogged(user != null);
       setInitializing(false);
     });
+  });
 
   useEffect(() => {
     if (loaded || error) {

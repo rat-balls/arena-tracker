@@ -1,17 +1,52 @@
 import { Link } from "expo-router";
-import { Text, TouchableHighlight, StyleSheet, Pressable } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TouchableHighlight,
+  StyleSheet,
+  Pressable,
+} from "react-native";
 
 interface TodoItemProps {
-  id: string;
+  imgUrl: string;
   name: string;
+  played: boolean;
+  god: boolean;
 }
 
-export default function ChampionListItemComponent({ id, name }: TodoItemProps) {
+export default function ChampionListItemComponent({
+  imgUrl,
+  name,
+  played,
+  god,
+}: TodoItemProps) {
   return (
     <Link href="/" asChild>
-      <Pressable style={s.container}>
-        <Text style={s.name}>{name}</Text>
-      </Pressable>
+      <TouchableHighlight style={s.container}>
+        <View>
+          <Image source={{ uri: imgUrl }}></Image>
+          <Text style={s.name}>{name}</Text>
+          <View
+            style={{
+              width: 20,
+              height: 20,
+              backgroundColor: played ? "green" : "red",
+            }}
+          >
+            <Text>Played</Text>
+          </View>
+          <View
+            style={{
+              width: 20,
+              height: 20,
+              backgroundColor: god ? "green" : "red",
+            }}
+          >
+            <Text>God</Text>
+          </View>{" "}
+        </View>
+      </TouchableHighlight>
     </Link>
   );
 }
