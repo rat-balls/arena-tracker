@@ -15,10 +15,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "foregroundImage": "./src/assets/images/LT.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.dingodeladouga.arenatracker",
+      "icon": "./src/assets/images/icon.png",
       "googleServicesFile": "./firebase/google-services.json"
     },
     "web": {
