@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
     fontFamily: "League",
     color: "#C89B3C",
     width: "100%",
-    textAlign: "center",
   },
   inputRow: {
     flexDirection: "row",

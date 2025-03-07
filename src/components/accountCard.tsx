@@ -72,11 +72,9 @@ export default function AccountCard({
   };
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
-      alert("Permission refusée pour accéder à la galerie.");
+      alert("Permission denied to access the gallery.");
       return;
     }
     let result = await ImagePicker.launchImageLibraryAsync({
