@@ -1,10 +1,10 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useMemo, useState } from "react";
 import {
+  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
-  StatusBar,
   StyleSheet,
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -29,33 +29,49 @@ export default function Page() {
 
   const [championSearch, setChampionSearch] = useState("");
 
+  const [loading, setLoading] = useState<boolean>(true);
+
   const [matches, setMatches] = useState<MatchDetails[]>([]);
   const [godPlayedChampions, setGodPlayedChampions] = useState<
     [string[], string[]]
   >([[], []]);
 
+  const finishLoading = () => {
+    setLoading(
+      champions.length > 0 && masteries.length > 0 && matches.length > 0,
+    );
+  };
+
   useEffect(() => {
     if (account === undefined) return;
+
+    setLoading(true);
     // Get masteries
-    RiotService.FetchChampionsMastery(account.puuid, REGION).then((m) => {
-      dispatch(setChampionMasteries(m));
-    });
+    RiotService.FetchChampionsMastery(account.puuid, REGION)
+      .then((m) => {
+        dispatch(setChampionMasteries(m));
+      })
+      .finally(finishLoading);
 
     // Get matches
-    RiotService.FetchMatchHistory(account.puuid).then((matchIds) => {
-      matchIds.forEach((matchId) => {
-        RiotService.FetchMatchDetails(matchId).then((matchDetails) =>
-          setMatches((old) => [...old, matchDetails]),
-        );
-      });
-    });
+    RiotService.FetchMatchHistory(account.puuid)
+      .then((matchIds) => {
+        matchIds.forEach((matchId) => {
+          RiotService.FetchMatchDetails(matchId)
+            .then((matchDetails) => setMatches((old) => [...old, matchDetails]))
+            .finally(finishLoading);
+        });
+      })
+      .finally(finishLoading);
 
     // Get champions if not already in cache
     if (champions.length > 0) return;
-    RiotService.FetchChampions("en_GB").then((result) => {
-      const champions = Object.values(result.data);
-      dispatch(setChampions(champions));
-    });
+    RiotService.FetchChampions("en_GB")
+      .then((result) => {
+        const champions = Object.values(result.data);
+        dispatch(setChampions(champions));
+      })
+      .finally(finishLoading);
   }, [account]);
 
   useEffect(() => {
@@ -99,18 +115,21 @@ export default function Page() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1 }}>
-        <StatusBar backgroundColor="white" />
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          enabled
-          style={{ flex: 1 }}
-        >
-          <LinearGradient
-            colors={["#091428", "#0A1428"]}
-            style={s.background}
-          />
-          <ChampionListComponent champions={championMasteries} />
-        </KeyboardAvoidingView>
+        {loading ? (
+          <ActivityIndicator size={"small"} style={{ margin: 28 }} />
+        ) : (
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            enabled
+            style={{ flex: 1 }}
+          >
+            <LinearGradient
+              colors={["#091428", "#0A1428"]}
+              style={s.background}
+            />
+            <ChampionListComponent champions={championMasteries} />
+          </KeyboardAvoidingView>
+        )}
       </SafeAreaView>
     </SafeAreaProvider>
   );

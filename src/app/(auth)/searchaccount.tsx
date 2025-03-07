@@ -80,9 +80,8 @@ export default function Searchaccount() {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
     backgroundColor: "#0A1428",
-    flex: 1,
+    height: "100%",
   },
   accountContainer: {
     height: 80,

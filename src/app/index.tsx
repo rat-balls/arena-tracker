@@ -76,7 +76,7 @@ export default function Index() {
 
   return (
     <ImageBackground
-      style={{ flex: 1 }}
+      style={styles.imageBackground}
       source={require("../assets/images/lol.jpg")}
       blurRadius={5}
     >
@@ -119,37 +119,29 @@ export default function Index() {
           )}
 
           {loading ? (
-            <ActivityIndicator size={"small"} style={{ margin: 28 }} />
+            <ActivityIndicator size={"small"} style={styles.loader} />
           ) : (
             <>
               {isRegistering ? (
                 <>
                   <Button onPress={register} title="Create Account"></Button>
-                  <Text style={{ textAlign: "center", color: "white" }}>
-                    or
-                  </Text>
+                  <Text style={styles.textButton}>or</Text>
                   <TouchableOpacity
                     style={styles.btn}
                     onPress={() => setIsRegistering(false)}
                   >
-                    <Text style={{ textAlign: "center", color: "white" }}>
-                      Login
-                    </Text>
+                    <Text style={styles.textButton}>Login</Text>
                   </TouchableOpacity>
                 </>
               ) : (
                 <>
                   <Button onPress={login} title="Login"></Button>
-                  <Text style={{ textAlign: "center", color: "white" }}>
-                    or
-                  </Text>
+                  <Text style={styles.textButton}>or</Text>
                   <TouchableOpacity
                     style={styles.btn}
                     onPress={() => setIsRegistering(true)}
                   >
-                    <Text style={{ textAlign: "center", color: "white" }}>
-                      Create account
-                    </Text>
+                    <Text style={styles.textButton}>Create account</Text>
                   </TouchableOpacity>
                 </>
               )}
@@ -168,7 +160,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 40,
   },
-
+  imageBackground: {
+    flex: 1,
+  },
+  loader: {
+    margin: 28,
+  },
   titleContainer: {
     position: "absolute",
     top: 40,
@@ -215,5 +212,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 15,
     textAlign: "center",
+  },
+
+  textButton: {
+    textAlign: "center",
+    color: "white",
   },
 });
