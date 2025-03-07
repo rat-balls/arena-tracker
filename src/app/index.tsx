@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 32,
+    fontSize: 30,
     fontFamily: "League",
     color: "white",
     textAlign: "center",
