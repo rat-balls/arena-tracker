@@ -1,5 +1,5 @@
 import { useFonts } from "expo-font";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import {
   Alert,
   Image,
@@ -100,17 +100,13 @@ export default function AccountCard({
     }
   };
 
-  useEffect(() => {
-    console.log("followPicture", followPicture[account.puuid]);
-  });
-
   return (
     <View style={styles.cardContainer}>
       <View style={styles.profileHeader}>
         <TouchableOpacity onPress={pickImage}>
           <Image
             source={
-              followPicture[account.puuid]
+              followPicture[account.puuid] !== undefined
                 ? { uri: followPicture[account.puuid] }
                 : require("../assets/images/default_account_icon.png")
             }
@@ -143,7 +139,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   icon: {
-    maxWidth: 50,
+    width: 50,
     height: 50,
     borderRadius: 10,
     flex: 1,

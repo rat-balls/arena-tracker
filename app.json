@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "arena-tracker",
+    "name": "Arena Tracker",
     "slug": "arena-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -10,19 +10,16 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "googleServicesFile": "./google-services.json",
-      "bundleIdentifier": "com.coding.arenatracker",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
-      }
+      "googleServicesFile": "./firebase/GoogleService-Info.plist",
+      "bundleIdentifier": "com.dingodeladouga.arenatracker"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.coding.arenatracker",
-      "googleServicesFile": "./google-services.json"
+      "package": "com.dingodeladouga.arenatracker",
+      "googleServicesFile": "./firebase/google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -34,7 +31,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./src/assets/images/splash-icon.png",
+          "image": "./src/assets/images/LT.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
@@ -45,6 +42,16 @@
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
         }
       ]
     ],
