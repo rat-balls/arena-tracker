@@ -1,5 +1,5 @@
-import { Tabs } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
 
 const Layout = () => {
   return (
@@ -52,6 +52,12 @@ const Layout = () => {
       />
       <Tabs.Screen
         name="accountDetails"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="account"
         options={{
           href: null,
         }}
