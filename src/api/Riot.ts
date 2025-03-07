@@ -204,6 +204,8 @@ export class RiotService {
         (p) => p.puuid === puuid,
       )[0];
 
+      if (participant === undefined) continue;
+
       const god = participant.placement === 1;
       const champion = participant.championName;
 

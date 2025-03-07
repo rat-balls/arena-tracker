@@ -16,7 +16,7 @@ export interface ChampionData {
   championLastPlayed: number;
   markRequiredForNextLevel: number;
   tokensEarned: number;
-  championGod: boolean;
+  championArenaGod: boolean;
 }
 
 interface IChampionCardProps {
@@ -50,7 +50,7 @@ export default function ChampionCard({ championData }: IChampionCardProps) {
         Marks required for next level: {championData.markRequiredForNextLevel}
       </Text>
       <Text>Tokens earned: {championData.tokensEarned}</Text>
-      <Text>{championData.championGod ? "God" : "Played"}</Text>
+      <Text>Arena: {championData.championArenaGod ? "God" : "Played"}</Text>
       <Text></Text>
       <Text></Text>
       <Text></Text>

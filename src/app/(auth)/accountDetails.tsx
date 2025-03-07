@@ -52,7 +52,7 @@ export default function Page() {
   useEffect(() => {
     if (account === undefined) return;
     setGodPlayedChampions(
-      RiotService.ChampionsGodOrPlayed(matches, account.puuid, "CHERRY"),
+      RiotService.ChampionsGodOrPlayed(matches, account.puuid, "ARENA"),
     );
   }, [matches]);
 
@@ -80,7 +80,7 @@ export default function Page() {
           championLastPlayed: mastery.lastPlayTime,
           markRequiredForNextLevel: mastery.markRequiredForNextLevel,
           tokensEarned: mastery.tokensEarned,
-          championGod: isGod,
+          championArenaGod: isGod,
         };
       })
       .filter((r) => r !== undefined);
