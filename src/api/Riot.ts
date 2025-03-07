@@ -1,7 +1,5 @@
 import { RIOT_API_KEY, RIOT_CDN_VERSION } from "../config/env";
 
-const GAME_MODE = "CHERRY";
-
 const REQUEST_COOLDOWN = 3e3; // eX = *10^X
 const WaitingRequests: Record<string, boolean> = {};
 let LAST_REQUEST = 0; // UNIX
@@ -28,6 +26,7 @@ export interface MatchParticipant {
 
 export interface MatchInfo {
   participants: MatchParticipant[];
+  gameMode: string;
 }
 
 export interface MatchDetails {
@@ -37,7 +36,7 @@ export interface MatchDetails {
 
 //#region Champion
 export interface ChampionInfo {
-  id: string;
+  key: string;
   name: string;
   title: string;
   image: {
@@ -63,7 +62,6 @@ export interface ChampionMastery {
 
   lastPlayTime: number;
 
-  chestGranted: boolean;
   tokensEarned: number;
 }
 
@@ -131,12 +129,8 @@ export class RiotService {
    * @param count How many matchs to fetch
    * @returns Promise of list of Match ids
    */
-  public static FetchMatchHistory(
-    puuid: string,
-    count: number,
-  ): Promise<string[]> {
-    const start = 0;
-    const url = `https://${NEAREST_REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${RIOT_API_KEY}`;
+  public static FetchMatchHistory(puuid: string): Promise<string[]> {
+    const url = `https://${NEAREST_REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?&api_key=${RIOT_API_KEY}`;
 
     return FetchRequest<string[]>(url);
   }
@@ -163,15 +157,6 @@ export class RiotService {
     return FetchRequest<ChampionsList>(url, true);
   }
 
-  // public static FetchChampion(
-  //   languageCode: string,
-  //   championName: string,
-  // ): Promise<object> {
-  //   const url = `https://ddragon.leagueoflegends.com/cdn/${RIOT_CDN_VERSION}/data/${languageCode}/champion/${championName}.json`;
-
-  //   return FetchRequest<object>(url);
-  // }
-
   /**
    * Get full url of the champion icon from the image file
    * @param championImageFull The image file of the champion icon
@@ -197,66 +182,40 @@ export class RiotService {
     return FetchRequest<ChampionMastery[]>(url);
   }
 
-  /*
-  public static FetchAndDisplayMatchHistory(
-    gameName: string,
-    tagLine: string,
-    region: string,
-  ) {
-    const accInfo = this.FetchAccountInfo(gameName, tagLine, region);
-    const PUUID = accInfo.puuid;
-    console.log("PUUID: " + PUUID);
-    const matchIds = fetchMatchHistory(PUUID, region);
+  /**
+   * Utility to get god champions and played champions
+   * @param matchDetails the match
+   * @param puuid puuid
+   * @returns god champions name array and played champions name array
+   */
+  public static ChampionsGodOrPlayed(
+    playerMatchsDetails: MatchDetails[],
+    puuid: string,
+    gameMode: string,
+  ): [string[], string[]] {
+    const championsGod: string[] = [];
+    const championsPlayed: string[] = [];
 
-    matchIds.forEach(function (matchId) {
-      try {
-        const matchDetails = fetchMatchDetails(matchId, region);
-        if (matchDetails.info.gameMode === GAME_MODE) {
-          matchDetails.info.participants.forEach(function (participant) {
-            if (participant.puuid === PUUID && participant.placement === 1) {
-              const champName = participant.championName
-                .replace(/[^a-zA-Z0-9]/g, "")
-                .toLowerCase();
-              championsRange.forEach(function (row, index) {
-                const rowChamp = row[0]
-                  .replace(/[^a-zA-Z0-9]/g, "")
-                  .toLowerCase();
-                if (
-                  rowChamp === champName ||
-                  rowChamp === champName + "willump" ||
-                  rowChamp === champName + "glasc" ||
-                  (rowChamp === "wukong" && champName === "monkeyking")
-                ) {
-                  console.log("God on " + participant.championName);
-                }
-              });
-            }
-            if (participant.puuid === PUUID) {
-              const champName = participant.championName
-                .replace(/[^a-zA-Z0-9]/g, "")
-                .toLowerCase();
-              championsRange.forEach(function (row, index) {
-                const rowChamp = row[0]
-                  .replace(/[^a-zA-Z0-9]/g, "")
-                  .toLowerCase();
-                if (
-                  rowChamp === champName ||
-                  rowChamp === champName + "willump" ||
-                  rowChamp === champName + "glasc" ||
-                  (rowChamp === "wukong" && champName === "monkeyking")
-                ) {
-                  console.log("Ocean on " + participant.championName);
-                }
-              });
-            }
-          });
-        }
-      } catch (e) {
-        Logger.log(
-          "Error processing match ID " + matchId + ": " + e.toString(),
-        );
+    for (let i = 0; i < playerMatchsDetails.length; i++) {
+      const matchDetails = playerMatchsDetails[i];
+      if (matchDetails.info.gameMode === gameMode) continue;
+
+      const participant = matchDetails.info.participants.filter(
+        (p) => p.puuid === puuid,
+      )[0];
+
+      if (participant === undefined) continue;
+
+      const god = participant.placement === 1;
+      const champion = participant.championName;
+
+      if (god) {
+        championsGod.push(champion);
+      } else {
+        championsPlayed.push(champion);
       }
-    });
+    }
+
+    return [championsGod, championsPlayed];
   }
-    */
 }
