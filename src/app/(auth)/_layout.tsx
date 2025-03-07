@@ -56,6 +56,12 @@ const Layout = () => {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="account"
+        options={{
+          href: null,
+        }}
+      />
     </Tabs>
   );
 };
