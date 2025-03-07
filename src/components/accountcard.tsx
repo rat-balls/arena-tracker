@@ -101,47 +101,58 @@ export default function AccountCard({
   };
 
   return (
-    <View style={styles.cardContainer}>
-      <View style={styles.profileHeader}>
-        <TouchableOpacity onPress={pickImage}>
-          <Image
-            source={
-              followPicture[account.puuid] !== undefined
-                ? { uri: followPicture[account.puuid] }
-                : require("../assets/images/default_account_icon.png")
-            }
-            style={styles.icon}
-          />
-        </TouchableOpacity>
-        <Text style={styles.username}>
-          {account.gameName}#{account.tagLine}
-        </Text>
-        <TouchableOpacity onPress={toogleFavorite}>
-          <Image
-            source={
-              isFavorite
-                ? require("../assets/images/favorite.png")
-                : require("../assets/images/not_favorite.png")
-            }
-            style={styles.favoriteIcon}
-          />
-        </TouchableOpacity>
+    <View style={styles.cardBorder}>
+      <View style={styles.cardContainer}>
+        <View style={styles.profileHeader}>
+          <TouchableOpacity onPress={pickImage}>
+            <Image
+              source={
+                followPicture[account.puuid] !== undefined
+                  ? { uri: followPicture[account.puuid] }
+                  : require("../assets/images/default_account_icon.png")
+              }
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+          <Text style={styles.username}>
+            {account.gameName}#{account.tagLine}
+          </Text>
+          <TouchableOpacity onPress={toogleFavorite}>
+            <Image
+              source={
+                isFavorite
+                  ? require("../assets/images/favorite.png")
+                  : require("../assets/images/not_favorite.png")
+              }
+              style={styles.favoriteIcon}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  cardBorder: {
+    flex: 1,
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: "#010A13",
+    backgroundColor: "#1E282D",
+    marginLeft: 10,
+    width: "95%",
+  },
   cardContainer: {
-    backgroundColor: "#0A323C",
-    borderRadius: 10,
-    marginBottom: 5,
-    width: "100%",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 1.5,
+    backgroundColor: "#010A13",
   },
   icon: {
     width: 50,
     height: 50,
-    borderRadius: 10,
     flex: 1,
   },
   username: {
@@ -155,9 +166,11 @@ const styles = StyleSheet.create({
     fontFamily: "League",
   },
   profileHeader: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
+    width: "100%",
     padding: 10,
   },
   favoriteIcon: {
