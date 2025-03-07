@@ -28,7 +28,13 @@ Arena Tracker is an application that allows League of Legends players to track t
 export default function Readme() {
   return (
     <ScrollView style={styles.container}>
-      <Markdown>{markdownContent}</Markdown>
+      <Markdown
+        style={{
+          text: { color: "#A09B8C" },
+        }}
+      >
+        {markdownContent}
+      </Markdown>
     </ScrollView>
   );
 }
@@ -37,6 +43,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "#091428",
+    paddingVertical: 20,
+  },
+  text: {
+    color: "#A09B8C",
   },
 });

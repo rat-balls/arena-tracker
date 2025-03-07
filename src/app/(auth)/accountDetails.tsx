@@ -69,7 +69,7 @@ export default function Page() {
     return masteries
       .map((mastery) => {
         const champion = champions.find(
-          (c) => c.key === mastery.championId.toString(),
+          (c: { key: string }) => c.key === mastery.championId.toString(),
         );
         if (champion === undefined) return undefined;
         const isGod =

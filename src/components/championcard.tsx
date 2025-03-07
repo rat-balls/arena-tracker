@@ -15,7 +15,8 @@ export interface ChampionData {
   championLastPlayed: number;
   markRequiredForNextLevel: number;
   tokensEarned: number;
-  championArenaGod: boolean;
+  played?: boolean;
+  god?: boolean;
 }
 
 interface IChampionCardProps {
@@ -28,9 +29,7 @@ let customFonts = {
 export default function ChampionCard({ championData }: IChampionCardProps) {
   useFonts(customFonts);
   return (
-    <View
-      style={[championData.championArenaGod ? styles.godCard : styles.card]}
-    >
+    <View style={[championData.god ? styles.godCard : styles.card]}>
       <Image source={{ uri: championData.championIcon }} style={styles.image} />
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{championData.championName}</Text>
