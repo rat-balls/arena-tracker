@@ -53,7 +53,8 @@ export default function Index() {
         await RegisterUser(email, password);
         alert("Account created !");
       } catch (e) {
-        alert("Registration failed: " + e);
+        alert("Registration failed: ");
+        console.log(e);
       } finally {
         setLoading(false);
       }
@@ -64,9 +65,10 @@ export default function Index() {
     setLoading(true);
     try {
       await LoginUser(email, password);
-      alert("You are logged in");
+      Alert.alert("You are logged in");
     } catch (e) {
-      alert("Login failed: " + e);
+      Alert.alert("Invalid Credentials, Try again");
+      console.log(e);
     } finally {
       setLoading(false);
     }
