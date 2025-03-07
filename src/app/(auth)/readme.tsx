@@ -1,6 +1,10 @@
 import React from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, Text } from "react-native";
 import Markdown from "react-native-markdown-display";
+import { useFonts } from "expo-font";
+let customFonts = {
+  League: require("../../assets/fonts/League.otf"),
+};
 
 const markdownContent = `
 # Arena Tracker
@@ -26,8 +30,10 @@ Arena Tracker is an application that allows League of Legends players to track t
 `;
 
 export default function Readme() {
+  useFonts(customFonts);
   return (
     <ScrollView style={styles.container}>
+      <Text style={styles.title}>About</Text>
       <Markdown
         style={{
           text: { color: "#A09B8C" },
@@ -48,5 +54,13 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#A09B8C",
+  },
+  title: {
+    fontSize: 28,
+    fontFamily: "League",
+    color: "white",
+    marginVertical: 15,
+    marginTop: 20,
+    marginHorizontal: "auto",
   },
 });

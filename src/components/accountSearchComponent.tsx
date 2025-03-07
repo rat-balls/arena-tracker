@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import { RiotAccount, RiotService } from "../api/Riot";
-import AccountCard from "./accountcard";
+import AccountCard from "./accountCard";
 import { useAppDispatch } from "../state/hooks";
 import { useRouter } from "expo-router";
 import { setProfile } from "../state/slices/selectionSlices";

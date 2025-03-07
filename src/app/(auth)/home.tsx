@@ -1,4 +1,4 @@
-import AccountCard from "@/src/components/accountcard";
+import AccountCard from "@/src/components/accountCard";
 import SearchAccountComponent from "@/src/components/accountSearchComponent";
 import { useAppDispatch, useAppSelector } from "@/src/state/hooks";
 import { selectFollowedProfiles } from "@/src/state/slices/profileSlices";
@@ -12,12 +12,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useFonts } from "expo-font";
+let customFonts = {
+  League: require("../../assets/fonts/League.otf"),
+};
 
 export default function Page() {
   const followProfiles = useAppSelector(selectFollowedProfiles);
 
   const dispatch = useAppDispatch();
   const router = useRouter();
+  useFonts(customFonts);
 
   return (
     <View style={styles.bgColor}>
@@ -30,6 +35,7 @@ export default function Page() {
           marginTop: 10,
         }}
       />
+      <Text style={styles.title}>Favorites</Text>
       <FlatList
         data={followProfiles}
         renderItem={({ item }) => (
@@ -79,5 +85,13 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     marginVertical: 40,
+  },
+  title: {
+    fontSize: 20,
+    fontFamily: "League",
+    color: "white",
+    marginVertical: 15,
+    marginTop: 20,
+    marginHorizontal: "auto",
   },
 });

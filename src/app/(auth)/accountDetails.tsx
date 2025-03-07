@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { MatchDetails, RiotService } from "../../api/Riot";
-import { ChampionData } from "../../components/championcard";
+import { ChampionData } from "../../components/championCard";
 import ChampionListComponent from "../../components/championListComponent";
 import { useAppDispatch, useAppSelector } from "../../state/hooks";
 import { selectChampions, setChampions } from "../../state/slices/dataSlices";
