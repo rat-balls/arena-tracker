@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableHighlight,
 } from "react-native";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import ChampionListItemComponent from "./championListItemComponent";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -52,6 +52,44 @@ export default function ChampionListComponent(champions: {
       inputRef.current.blur();
     }
   }
+
+  const data = useMemo(() => {
+    return filter === Filter.DISABLED
+      ? champions.champions
+          .filter((el) =>
+            el.championName.toLowerCase().includes(search.toLowerCase()),
+          )
+          .sort((a, b) =>
+            orderAlphabet
+              ? b.championName === a.championName
+                ? 0
+                : b.championName < a.championName
+                  ? 1
+                  : -1
+              : parseInt(b.championExp) - parseInt(a.championExp),
+          )
+      : filter === Filter.NEITHER
+        ? champions.champions
+            .filter((el) =>
+              el.championName.toLowerCase().includes(search.toLowerCase()),
+            )
+            .filter((el) => !el.played)
+        : filter === Filter.PLAYED
+          ? champions.champions
+              .filter((el) =>
+                el.championName.toLowerCase().includes(search.toLowerCase()),
+              )
+              .filter((el) => el.played)
+          : filter === Filter.GOD
+            ? champions.champions
+                .filter((el) =>
+                  el.championName.toLowerCase().includes(search.toLowerCase()),
+                )
+                .filter((el) => el.god)
+            : champions.champions.filter((el) =>
+                el.championName.toLowerCase().includes(search.toLowerCase()),
+              );
+  }, [champions.champions, filter, orderAlphabet, search]);
 
   return (
     <View style={s.container}>
@@ -302,53 +340,7 @@ export default function ChampionListComponent(champions: {
       <View style={s.scroll}>
         <FlatList
           style={{ width: "100%" }}
-          data={
-            filter === Filter.DISABLED
-              ? champions.champions
-                  .filter((el) =>
-                    el.championName
-                      .toLowerCase()
-                      .includes(search.toLowerCase()),
-                  )
-                  .sort((a, b) =>
-                    orderAlphabet
-                      ? b.championName === a.championName
-                        ? 0
-                        : b.championName < a.championName
-                          ? 1
-                          : -1
-                      : parseInt(b.championExp) - parseInt(a.championExp),
-                  )
-              : filter === Filter.NEITHER
-                ? champions.champions
-                    .filter((el) =>
-                      el.championName
-                        .toLowerCase()
-                        .includes(search.toLowerCase()),
-                    )
-                    .filter((el) => !el.played)
-                : filter === Filter.PLAYED
-                  ? champions.champions
-                      .filter((el) =>
-                        el.championName
-                          .toLowerCase()
-                          .includes(search.toLowerCase()),
-                      )
-                      .filter((el) => el.played)
-                  : filter === Filter.GOD
-                    ? champions.champions
-                        .filter((el) =>
-                          el.championName
-                            .toLowerCase()
-                            .includes(search.toLowerCase()),
-                        )
-                        .filter((el) => el.god)
-                    : champions.champions.filter((el) =>
-                        el.championName
-                          .toLowerCase()
-                          .includes(search.toLowerCase()),
-                      )
-          }
+          data={data}
           renderItem={({ item }) => (
             <ChampionListItemComponent
               mastery={item.championLevel}
