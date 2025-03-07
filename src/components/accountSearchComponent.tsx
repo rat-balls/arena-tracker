@@ -128,10 +128,14 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     marginTop: 20,
     marginHorizontal: "auto",
+    width: "100%",
+    textAlign: "center",
   },
   libelle: {
     fontFamily: "League",
     color: "#C89B3C",
+    width: "100%",
+    textAlign: "center",
   },
   inputRow: {
     flexDirection: "row",

@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   username: {
-    fontSize: 18,
+    fontSize: 16,
     color: "#C89B3C",
     textShadowColor: "#F0E6D2",
     textShadowOffset: { width: -1, height: 1 },
