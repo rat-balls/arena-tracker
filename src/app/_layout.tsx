@@ -1,3 +1,5 @@
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 import {
   RelativePathString,
   Stack,
@@ -13,6 +15,15 @@ import { auth } from "../firebase/firebase";
 import { persistor, store } from "../state/store";
 
 export default function RootLayout() {
+  const [loaded, error] = useFonts({
+    "Spiegel Regular": require("../assets/fonts/SpiegelSans Regular.otf"),
+    "Spiegel SemiBold": require("../assets/fonts/SpiegelSans SemiBold.otf"),
+    "Spiegel Bold": require("../assets/fonts/SpiegelSans Bold.otf"),
+    "Beaufort Bold": require("../assets/fonts/Beaufort Bold.ttf"),
+    "Beaufort BoldItalic": require("../assets/fonts/Beaufort BoldItalic.ttf"),
+    "Beaufort MediumItalic": require("../assets/fonts/Beaufort MediumItalic.ttf"),
+    "Beaufort Regular": require("../assets/fonts/Beaufort Regular.ttf"),
+  });
   const [initializing, setInitializing] = useState(true);
   const [isLogged, setLogged] = useState<boolean>();
   const router = useRouter();
@@ -27,7 +38,15 @@ export default function RootLayout() {
       setLogged(user != null);
       setInitializing(false);
     });
+  });
 
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+  useEffect(() => {
     if (initializing || !navigatorReady) return;
     const inAuthGroup = (segments[0] as string) === "(auth)";
 
@@ -38,6 +57,10 @@ export default function RootLayout() {
       router.replace("/");
     }
   }, [navigatorReady, isLogged, initializing, segments, router]);
+
+  if (!loaded && !error) {
+    return null;
+  }
 
   if (initializing)
     return (
