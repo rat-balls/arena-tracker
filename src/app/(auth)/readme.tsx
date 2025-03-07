@@ -21,8 +21,8 @@ Arena Tracker is an application that allows League of Legends players to track t
 
 ## Features
 
-- Track winning champions in the Arena game mode.
-- Add accounts in favorite for tracking them (and import pictures for modify their profile picture).
+- Track your progress for the Arena God and Ocean achievement in league of legends !
+- Add your accounts in favorite to start tracking them ! (and import pictures to modify their profile picture)
 `;
 
 export default function Readme() {

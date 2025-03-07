@@ -14,7 +14,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 enum Filter {
   DISABLED = "All Champions",
   NEITHER = "Neither",
-  PLAYED = "Played",
+  PLAYED = "Ocean",
   GOD = "God",
 }
 
@@ -39,6 +39,8 @@ export default function ChampionListComponent(champions: {
 }) {
   const inputRef = useRef<TextInput>(null);
 
+  const [orderAlphabet, setOrderAlphabet] = useState(false);
+
   const [search, setSearch] = useState("");
   const [searchFocus, setSearchFocus] = useState(false);
 
@@ -53,7 +55,8 @@ export default function ChampionListComponent(champions: {
 
   return (
     <View style={s.container}>
-      <View style={{ height: 50, margin: 10 }}>
+      {/*Header*/}
+      <View style={{ height: 110, margin: 10 }}>
         <View style={s.header}>
           {/*Search bar*/}
           <LinearGradient
@@ -218,15 +221,104 @@ export default function ChampionListComponent(champions: {
             </View>
           </View>
         </View>
+        <View style={s.header}>
+          <View style={s.orderContainer}>
+            <Text style={s.sortByText}>Sort by: </Text>
+            <View style={s.orderContainer2}>
+              <Text style={s.orderText}>Mastery</Text>
+              <TouchableHighlight onPress={() => setOrderAlphabet(false)}>
+                <LinearGradient
+                  colors={
+                    !orderAlphabet
+                      ? ["#C8AA6E", "#785A28"]
+                      : ["#463714", "#463714"]
+                  }
+                >
+                  <LinearGradient
+                    colors={
+                      !orderAlphabet
+                        ? ["#0A323C", "#0A323C"]
+                        : ["#0f171f", "#0f171f"]
+                    }
+                    style={s.orderCheck}
+                  >
+                    <FontAwesome
+                      size={15}
+                      name="check"
+                      color="#F0E6D2"
+                      style={{
+                        display: orderAlphabet ? "none" : undefined,
+                        margin: "auto",
+                      }}
+                    />
+                  </LinearGradient>
+                </LinearGradient>
+              </TouchableHighlight>
+            </View>
+            <View style={[s.orderContainer2, { marginLeft: -30 }]}>
+              <Text style={s.orderText}>Alphabet</Text>
+              <TouchableHighlight onPress={() => setOrderAlphabet(true)}>
+                <LinearGradient
+                  colors={
+                    orderAlphabet
+                      ? ["#C8AA6E", "#785A28"]
+                      : ["#463714", "#463714"]
+                  }
+                >
+                  <LinearGradient
+                    colors={
+                      orderAlphabet
+                        ? ["#0A323C", "#0A323C"]
+                        : ["#0f171f", "#0f171f"]
+                    }
+                    style={s.orderCheck}
+                  >
+                    <FontAwesome
+                      size={15}
+                      name="check"
+                      color="#F0E6D2"
+                      style={{
+                        display: !orderAlphabet ? "none" : undefined,
+                        margin: "auto",
+                      }}
+                    />
+                  </LinearGradient>
+                </LinearGradient>
+              </TouchableHighlight>
+            </View>
+          </View>
+          <View style={s.manualEditContainer}></View>
+        </View>
       </View>
+      {/*Linebreak*/}
+      <View
+        style={{
+          backgroundColor: "#1E282D",
+          width: "100%",
+          height: 2,
+        }}
+      />
+      {/*List*/}
       <View style={s.scroll}>
         <FlatList
           style={{ width: "100%" }}
           data={
             filter === Filter.DISABLED
-              ? champions.champions.filter((el) =>
-                  el.championName.toLowerCase().includes(search.toLowerCase()),
-                )
+              ? champions.champions
+                  .filter((el) =>
+                    el.championName
+                      .toLowerCase()
+                      .includes(search.toLowerCase()),
+                  )
+                  .sort((a, b) =>
+                    orderAlphabet
+                      ? b.championName === a.championName
+                        ? 0
+                        : b.championName < a.championName
+                          ? 1
+                          : -1
+                      : parseInt(b.championExp) - parseInt(a.championExp),
+                  )
               : filter === Filter.NEITHER
                 ? champions.champions
                     .filter((el) =>
@@ -276,12 +368,41 @@ const s = StyleSheet.create({
   container: {
     flex: 1,
   },
+  orderContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: -10,
+  },
+  sortByText: {
+    color: "#A09B8C",
+  },
+  orderContainer2: {
+    marginLeft: -10,
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  orderText: {
+    color: "#A09B8C",
+    fontSize: 13,
+    marginBottom: 5,
+  },
+  orderCheck: {
+    height: 20,
+    width: 20,
+    margin: 1.5,
+  },
+  manualEditContainer: {
+    flex: 1,
+  },
   header: {
     flex: 1,
     flexDirection: "row",
-    height: 50,
+    paddingBottom: 5,
   },
   scroll: {
+    paddingTop: 10,
     flex: 1,
     flexWrap: "wrap",
     width: "100%",
