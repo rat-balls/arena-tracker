@@ -18,7 +18,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/LT.png",
+        "foregroundImage": "./src/assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.dingodeladouga.arenatracker",
@@ -39,7 +39,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./src/assets/images/LT.png",
+          "image": "./src/assets/images/icon.png",
           "imageWidth": 200,
           "resizeMode": "contain"
         }
