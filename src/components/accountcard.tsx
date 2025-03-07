@@ -1,5 +1,5 @@
 import { useFonts } from "expo-font";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import {
   Alert,
   Image,
@@ -12,9 +12,13 @@ import { RiotAccount } from "../api/Riot";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
 import {
   followProfile,
+  selectFollowedPicture,
   selectFollowedProfiles,
+  setProfilePicture,
   unfollowProfile,
 } from "../state/slices/profileSlices";
+
+import * as ImagePicker from "expo-image-picker";
 let customFonts = {
   League: require("../assets/fonts/League.otf"),
 };
@@ -31,6 +35,7 @@ export default function AccountCard({
   confirmUnfollow,
 }: IAccountCardProps | any) {
   const followProfiles = useAppSelector(selectFollowedProfiles);
+  const followPicture = useAppSelector(selectFollowedPicture);
   const dispatch = useAppDispatch();
   useFonts(customFonts);
 
@@ -39,7 +44,7 @@ export default function AccountCard({
     return (
       followProfiles.find(({ puuid }) => puuid === account.puuid) != undefined
     );
-  }, [account, followProfile]);
+  }, [account, followProfiles]);
 
   const toogleFavorite = () => {
     if (isFavorite && confirmUnfollow === true) {
@@ -66,17 +71,52 @@ export default function AccountCard({
     }
   };
 
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Permission refusée pour accéder à la galerie.");
+      return;
+    }
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    console.log("result", result);
+
+    if (!result.canceled) {
+      console.log(account.puuid);
+      dispatch(
+        setProfilePicture({
+          puuid: account.puuid,
+          imageUrl: result.assets[0].uri,
+        }),
+      );
+      console.log(followPicture);
+    }
+  };
+
+  useEffect(() => {
+    console.log("followPicture", followPicture[account.puuid]);
+  });
+
   return (
     <View style={styles.cardContainer}>
       <View style={styles.profileHeader}>
-        <Image
-          source={
-            profilePicture !== undefined
-              ? profilePicture
-              : require("../assets/images/default_account_icon.png")
-          }
-          style={styles.icon}
-        />
+        <TouchableOpacity onPress={pickImage}>
+          <Image
+            source={
+              followPicture[account.puuid]
+                ? { uri: followPicture[account.puuid] }
+                : require("../assets/images/default_account_icon.png")
+            }
+            style={styles.icon}
+          />
+        </TouchableOpacity>
         <Text style={styles.username}>
           {account.gameName}#{account.tagLine}
         </Text>
@@ -98,8 +138,8 @@ export default function AccountCard({
 const styles = StyleSheet.create({
   cardContainer: {
     backgroundColor: "#0A323C",
-    margin: 10,
     borderRadius: 10,
+    marginBottom: 5,
     width: "100%",
   },
   icon: {
