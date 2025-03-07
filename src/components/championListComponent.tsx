@@ -18,46 +18,25 @@ enum Filter {
   GOD = "God",
 }
 
-interface ChampionType {
-  key: string;
-  mastery: number;
-  imgUrl: string;
-  name: string;
-  played: boolean;
-  god: boolean;
+export interface ChampionData {
+  championName: string;
+  championTitle: string;
+  championIcon: string;
+  championPartype: string;
+  championTags: string;
+  championLevel: number;
+  championExp: string;
+  seasonMilestone: number;
+  championLastPlayed: number;
+  markRequiredForNextLevel: number;
+  tokensEarned: number;
+  played?: boolean;
+  god?: boolean;
 }
 
-export default function ChampionListComponent() {
-  const champions = [
-    {
-      key: "266",
-      mastery: 28,
-      imgUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU3HFVnkYFJ_OIogo__Qv58bmhwRqZJcQhOA&s",
-      name: "Aatrox",
-      played: true,
-      god: true,
-    },
-    {
-      key: "103",
-      mastery: 5,
-      imgUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU3HFVnkYFJ_OIogo__Qv58bmhwRqZJcQhOA&s",
-      name: "Ahri",
-      played: true,
-      god: false,
-    },
-    {
-      key: "84",
-      mastery: 2,
-      imgUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU3HFVnkYFJ_OIogo__Qv58bmhwRqZJcQhOA&s",
-      name: "Akali",
-      played: false,
-      god: false,
-    },
-  ];
-
+export default function ChampionListComponent(champions: {
+  champions: ChampionData[];
+}) {
   const inputRef = useRef<TextInput>(null);
 
   const [search, setSearch] = useState("");
@@ -206,7 +185,7 @@ export default function ChampionListComponent() {
                 }}
               >
                 <View style={s.dropdown}>
-                  <Text style={s.dropdownText}>Played</Text>
+                  <Text style={s.dropdownText}>Ocean</Text>
                   <FontAwesome
                     size={20}
                     name="check"
@@ -245,41 +224,48 @@ export default function ChampionListComponent() {
           style={{ width: "100%" }}
           data={
             filter === Filter.DISABLED
-              ? champions.filter((el) =>
-                  el.name.toLowerCase().includes(search.toLowerCase()),
+              ? champions.champions.filter((el) =>
+                  el.championName.toLowerCase().includes(search.toLowerCase()),
                 )
               : filter === Filter.NEITHER
-                ? champions
+                ? champions.champions
                     .filter((el) =>
-                      el.name.toLowerCase().includes(search.toLowerCase()),
+                      el.championName
+                        .toLowerCase()
+                        .includes(search.toLowerCase()),
                     )
                     .filter((el) => !el.played)
                 : filter === Filter.PLAYED
-                  ? champions
+                  ? champions.champions
                       .filter((el) =>
-                        el.name.toLowerCase().includes(search.toLowerCase()),
+                        el.championName
+                          .toLowerCase()
+                          .includes(search.toLowerCase()),
                       )
                       .filter((el) => el.played)
                   : filter === Filter.GOD
-                    ? champions
+                    ? champions.champions
                         .filter((el) =>
-                          el.name.toLowerCase().includes(search.toLowerCase()),
+                          el.championName
+                            .toLowerCase()
+                            .includes(search.toLowerCase()),
                         )
                         .filter((el) => el.god)
-                    : champions.filter((el) =>
-                        el.name.toLowerCase().includes(search.toLowerCase()),
+                    : champions.champions.filter((el) =>
+                        el.championName
+                          .toLowerCase()
+                          .includes(search.toLowerCase()),
                       )
           }
           renderItem={({ item }) => (
             <ChampionListItemComponent
-              mastery={item.mastery}
-              imgUrl={item.imgUrl}
-              name={item.name}
-              played={item.played}
-              god={item.god}
+              mastery={item.championLevel}
+              imgUrl={item.championIcon}
+              name={item.championName}
+              played={item.played!}
+              god={item.god!}
             />
           )}
-          keyExtractor={(item) => item.key}
         />
       </View>
     </View>

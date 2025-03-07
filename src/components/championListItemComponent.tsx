@@ -34,7 +34,7 @@ export default function ChampionListItemComponent({
                 style={s.imgContainerBorder}
               >
                 <View style={s.imgContainer}>
-                  <Image source={{ uri: imgUrl }}></Image>
+                  <Image style={s.img} source={{ uri: imgUrl }}></Image>
                 </View>
               </LinearGradient>
               <View style={s.textContainer}>
@@ -56,7 +56,7 @@ export default function ChampionListItemComponent({
                     style={s.check}
                   />
                 </LinearGradient>
-                <Text style={s.checkText}>Played</Text>
+                <Text style={s.checkText}>Ocean</Text>
               </View>
               <View style={s.checkContainer}>
                 <LinearGradient
@@ -111,8 +111,16 @@ const s = StyleSheet.create({
   imgContainer: {
     width: 60,
     height: 60,
+    padding: 1.5,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  imgContainerBorder: {},
+  img: {
+    width: "100%",
+    height: "100%",
+    margin: 1.5,
+  },
   border: {
     flex: 1,
     flexDirection: "row",

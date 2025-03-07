@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { FlatList, TextInput, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet
+} from "react-native";
 import { MatchDetails, RiotService } from "../../api/Riot";
 import ChampionCard, { ChampionData } from "../../components/championcard";
 import { useAppDispatch, useAppSelector } from "../../state/hooks";
@@ -9,6 +15,9 @@ import {
   selectCurrentProfile,
   setChampionMasteries,
 } from "../../state/slices/selectionSlices";
+import ChampionListComponent from "../../components/championListComponent";
+import { LinearGradient } from "expo-linear-gradient";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const REGION = "euw1";
 
@@ -80,32 +89,38 @@ export default function Page() {
           championLastPlayed: mastery.lastPlayTime,
           markRequiredForNextLevel: mastery.markRequiredForNextLevel,
           tokensEarned: mastery.tokensEarned,
-          championArenaGod: isGod,
+          god: isGod,
+          played: false,
         };
       })
       .filter((r) => r !== undefined);
   }, [champions, masteries, godPlayedChampions]);
 
-  const championsMasteriesSearch = useMemo(
-    () =>
-      championMasteries.filter((c) =>
-        c.championName
-          .toLocaleLowerCase()
-          .startsWith(championSearch.trim().toLowerCase()),
-      ),
-    [championMasteries, championSearch],
-  );
-
   return (
-    <View>
-      <TextInput
-        placeholder="Search for a champion"
-        onChangeText={setChampionSearch}
-      />
-      <FlatList
-        data={championsMasteriesSearch}
-        renderItem={({ item }) => <ChampionCard championData={item} />}
-      />
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar backgroundColor="white" />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          enabled
+          style={{ flex: 1 }}
+        >
+          <LinearGradient
+            colors={["#091428", "#0A1428"]}
+            style={s.background}
+          />
+          <ChampionListComponent champions={championMasteries} />
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
+const s = StyleSheet.create({
+  background: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    height: "100%",
+  },
+});
