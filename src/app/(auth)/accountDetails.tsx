@@ -36,20 +36,15 @@ export default function Page() {
   useEffect(() => {
     if (account === undefined) return;
     // Get masteries
-    console.log("getting champion mastery");
     RiotService.FetchChampionsMastery(account.puuid, REGION).then((m) => {
       dispatch(setChampionMasteries(m));
-      console.log("champion mastery ok");
     });
 
     // Get matches
-    console.log("getting match history");
     RiotService.FetchMatchHistory(account.puuid).then((matchIds) => {
-      console.log("got match ids", matchIds.length);
       matchIds.forEach((matchId, i) => {
         RiotService.FetchMatchDetails(matchId).then((matchDetails) => {
           setMatches((old) => [...old, matchDetails]);
-          console.log(i + 1, "/", matchIds.length);
         });
       });
     });
