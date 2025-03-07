@@ -59,7 +59,9 @@ export default function Page() {
   const championMasteries: ChampionData[] = useMemo(() => {
     return masteries
       .map((mastery) => {
-        const champion = champions.at(mastery.championId);
+        const champion = champions.find(
+          (c) => c.key === mastery.championId.toString(),
+        );
         if (champion === undefined) return undefined;
         const isGod =
           godPlayedChampions[0].find(
@@ -73,7 +75,7 @@ export default function Page() {
           championPartype: champion.partype,
           championTags: champion.tags.join(", "),
           championLevel: mastery.championLevel,
-          championExp: `${mastery.championPoints}/${mastery.championPoints + mastery.championPointsUntilNextLevel}`,
+          championExp: `${mastery.championPoints}/${mastery.championPoints + mastery.championPointsSinceLastLevel}`,
           seasonMilestone: mastery.championSeasonMilestone,
           championLastPlayed: mastery.lastPlayTime,
           markRequiredForNextLevel: mastery.markRequiredForNextLevel,

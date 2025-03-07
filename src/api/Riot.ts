@@ -36,7 +36,7 @@ export interface MatchDetails {
 
 //#region Champion
 export interface ChampionInfo {
-  id: string;
+  key: string;
   name: string;
   title: string;
   image: {
