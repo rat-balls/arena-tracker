@@ -1,8 +1,7 @@
 import React from "react";
-import { Image, Text, View } from "react-native";
-let customFonts = {
-  League: require("../assets/fonts/League.otf"),
-};
+import { Image, Text, View, StyleSheet } from "react-native";
+
+import { useFonts } from "expo-font";
 
 export interface ChampionData {
   championName: string;
@@ -22,40 +21,88 @@ export interface ChampionData {
 interface IChampionCardProps {
   championData: ChampionData;
 }
+let customFonts = {
+  League: require("../assets/fonts/League.otf"),
+};
 
 export default function ChampionCard({ championData }: IChampionCardProps) {
+  useFonts(customFonts);
   return (
-    <View>
-      <Image
-        source={{ uri: championData.championIcon }}
-        style={{
-          width: 50,
-          height: 50,
-        }}
-      />
-      <Text>
-        {championData.championName}, {championData.championTitle}
-      </Text>
-      <Text>{championData.championPartype}</Text>
-      <Text>{championData.championTags}</Text>
-      <Text>
-        Level {championData.championLevel} ({championData.championExp})
-      </Text>
-      <Text>Season milestone: {championData.seasonMilestone}</Text>
-      <Text>
-        {"Last played at "}
-        {new Date(championData.championLastPlayed).toDateString()}
-      </Text>
-      <Text>
-        Marks required for next level: {championData.markRequiredForNextLevel}
-      </Text>
-      <Text>Tokens earned: {championData.tokensEarned}</Text>
-      <Text>Arena: {championData.championArenaGod ? "God" : "Played"}</Text>
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
+    <View
+      style={[championData.championArenaGod ? styles.godCard : styles.card]}
+    >
+      <Image source={{ uri: championData.championIcon }} style={styles.image} />
+      <View style={styles.infoContainer}>
+        <Text style={styles.name}>{championData.championName}</Text>
+        <Text style={styles.title}>{championData.championTitle}</Text>
+        <Text style={styles.level}>Level {championData.championLevel}</Text>
+        <Text style={styles.exp}>EXP: {championData.championExp}</Text>
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: "#111",
+    borderColor: "#c9aa71",
+    borderWidth: 2,
+    borderRadius: 10,
+    padding: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 5,
+    shadowColor: "#c9aa71",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  godCard: {
+    backgroundColor: "#006400",
+    borderColor: "#c9aa71",
+    borderWidth: 2,
+    borderRadius: 10,
+    padding: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 5,
+    shadowColor: "#c9aa71",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 5,
+    borderColor: "#c9aa71",
+    borderWidth: 1,
+  },
+  infoContainer: {
+    marginLeft: 10,
+    flex: 1,
+  },
+  name: {
+    color: "#ffd700",
+    fontSize: 20,
+    fontWeight: "bold",
+    fontFamily: "League",
+  },
+  title: {
+    color: "#bbb",
+    fontSize: 14,
+    fontStyle: "italic",
+  },
+  level: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginTop: 5,
+  },
+  exp: {
+    color: "#ccc",
+    fontSize: 14,
+  },
+});
