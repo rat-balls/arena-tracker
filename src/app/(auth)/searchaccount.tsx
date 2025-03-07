@@ -57,7 +57,9 @@ export default function Searchaccount() {
         </TouchableOpacity>
       </View>
       {account === undefined ? null : (
-        <AccountCard account={account}></AccountCard>
+        <View style={styles.card}>
+          <AccountCard account={account}></AccountCard>
+        </View>
       )}
     </View>
   );
@@ -65,9 +67,8 @@ export default function Searchaccount() {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
     backgroundColor: "#0A1428",
-    flex: 1,
+    height: "100%",
   },
   cardContainer: {
     width: "100%",
@@ -133,5 +134,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 4,
     borderColor: "#0397AB",
+  },
+  card: {
+    height: "100",
   },
 });
