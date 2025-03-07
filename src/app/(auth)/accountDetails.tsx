@@ -8,16 +8,16 @@ import {
   StyleSheet,
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { MatchDetails, RiotService } from "../api/Riot";
-import { useAppDispatch, useAppSelector } from "../state/hooks";
-import { selectChampions, setChampions } from "../state/slices/dataSlices";
+import { MatchDetails, RiotService } from "../../api/Riot";
+import { ChampionData } from "../../components/championcard";
+import ChampionListComponent from "../../components/championListComponent";
+import { useAppDispatch, useAppSelector } from "../../state/hooks";
+import { selectChampions, setChampions } from "../../state/slices/dataSlices";
 import {
   selectChampionMasteries,
   selectCurrentProfile,
   setChampionMasteries,
-} from "../state/slices/selectionSlices";
-import { ChampionData } from "./championcard";
-import ChampionListComponent from "./championListComponent";
+} from "../../state/slices/selectionSlices";
 
 const REGION = "euw1";
 
