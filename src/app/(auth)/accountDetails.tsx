@@ -59,7 +59,7 @@ export default function Page() {
   useEffect(() => {
     if (account === undefined) return;
     setGodPlayedChampions(
-      RiotService.ChampionsGodOrPlayed(matches, account.puuid, "ARENA"),
+      RiotService.ChampionsGodOrPlayed(matches, account.puuid, "CHERRY"),
     );
   }, [matches, account]);
 
