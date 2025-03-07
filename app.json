@@ -10,8 +10,11 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "googleServicesFile": "./firebase/GoogleService-Info.plist",
-      "bundleIdentifier": "com.dingodeladouga.arenatracker"
+      "googleServicesFile": "./firebase/google-services.json",
+      "bundleIdentifier": "com.dingodeladouga.arenatracker",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -20,7 +23,10 @@
       },
       "package": "com.dingodeladouga.arenatracker",
       "icon": "./src/assets/images/icon.png",
-      "googleServicesFile": "./firebase/google-services.json"
+      "googleServicesFile": "./firebase/google-services.json",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -28,14 +34,14 @@
       "favicon": "./src/assets/images/favicon.png"
     },
     "plugins": [
+      
       "expo-router",
       [
         "expo-splash-screen",
         {
           "image": "./src/assets/images/LT.png",
           "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "resizeMode": "contain"
         }
       ],
       "expo-font",

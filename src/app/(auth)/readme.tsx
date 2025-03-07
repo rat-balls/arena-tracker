@@ -1,7 +1,15 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+} from "react-native";
 import Markdown from "react-native-markdown-display";
 import { useFonts } from "expo-font";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 let customFonts = {
   League: require("../../assets/fonts/League.otf"),
 };
@@ -32,20 +40,37 @@ Arena Tracker is an application that allows League of Legends players to track t
 export default function Readme() {
   useFonts(customFonts);
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>About</Text>
-      <Markdown
-        style={{
-          text: { color: "#A09B8C" },
-        }}
-      >
-        {markdownContent}
-      </Markdown>
-    </ScrollView>
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          enabled
+          style={{ flex: 1 }}
+        >
+          <ScrollView style={styles.container}>
+            <Text style={styles.title}>About</Text>
+            <Markdown
+              style={{
+                text: { color: "#A09B8C" },
+              }}
+            >
+              {markdownContent}
+            </Markdown>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    height: "100%",
+  },
   container: {
     flex: 1,
     paddingHorizontal: 20,
