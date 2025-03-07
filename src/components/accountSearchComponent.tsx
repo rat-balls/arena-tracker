@@ -9,16 +9,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { RiotAccount, RiotService } from "../../api/Riot";
-import AccountCard from "../../components/accountcard";
-import { useAppDispatch } from "@/src/state/hooks";
+import { RiotAccount, RiotService } from "../api/Riot";
+import AccountCard from "./accountcard";
+import { useAppDispatch } from "../state/hooks";
 import { useRouter } from "expo-router";
-import { setProfile } from "@/src/state/slices/selectionSlices";
+import { setProfile } from "../state/slices/selectionSlices";
 let customFonts = {
-  League: require("../../assets/fonts/League.otf"),
+  League: require("../assets/fonts/League.otf"),
 };
 
-export default function Searchaccount() {
+export default function SearchAccountComponent() {
   const [gameName, setGameName] = useState("");
   const [tagLine, setTagLine] = useState("");
 
@@ -37,27 +37,37 @@ export default function Searchaccount() {
       });
   };
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Search for acccount</Text>
+    <View style={{ height: account === undefined ? 120 : 200 }}>
+      <Text style={styles.title}>Search for account</Text>
       <View style={styles.inputRow}>
         <View style={styles.inputContainer}>
           <Text style={styles.libelle}>Game name</Text>
           <TextInput
             style={styles.input}
             placeholder="supernoob69"
-            placeholderTextColor="#FFF"
+            placeholderTextColor="#A09B8C"
             onChangeText={setGameName}
           />
         </View>
-
         <View style={styles.inputContainer}>
           <Text style={styles.libelle}>Tag</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="#"
-            placeholderTextColor="#FFFF"
-            onChangeText={setTagLine}
-          />
+          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
+            <Text
+              style={{
+                color: "#A09B8C",
+                position: "absolute",
+                marginLeft: -11,
+              }}
+            >
+              #
+            </Text>
+            <TextInput
+              style={styles.input}
+              placeholder="EUW"
+              placeholderTextColor="#A09B8C"
+              onChangeText={setTagLine}
+            />
+          </View>
         </View>
         <TouchableOpacity style={styles.btn} onPress={fetchAccount}>
           <Text style={styles.buttonText}>Search</Text>
@@ -79,10 +89,6 @@ export default function Searchaccount() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#0A1428",
-    height: "100%",
-  },
   accountContainer: {
     height: 80,
     width: "100%",
@@ -120,6 +126,8 @@ const styles = StyleSheet.create({
     fontFamily: "League",
     color: "white",
     marginVertical: 15,
+    marginTop: 20,
+    marginHorizontal: "auto",
   },
   libelle: {
     fontFamily: "League",
@@ -132,7 +140,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   inputContainer: {
-    marginHorizontal: 5,
+    marginHorizontal: 10,
     alignItems: "center",
   },
   input: {
