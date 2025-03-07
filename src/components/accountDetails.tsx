@@ -1,23 +1,23 @@
+import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useMemo, useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   StatusBar,
-  StyleSheet
+  StyleSheet,
 } from "react-native";
-import { MatchDetails, RiotService } from "../../api/Riot";
-import ChampionCard, { ChampionData } from "../../components/championcard";
-import { useAppDispatch, useAppSelector } from "../../state/hooks";
-import { selectChampions, setChampions } from "../../state/slices/dataSlices";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { MatchDetails, RiotService } from "../api/Riot";
+import { useAppDispatch, useAppSelector } from "../state/hooks";
+import { selectChampions, setChampions } from "../state/slices/dataSlices";
 import {
   selectChampionMasteries,
   selectCurrentProfile,
   setChampionMasteries,
-} from "../../state/slices/selectionSlices";
-import ChampionListComponent from "../../components/championListComponent";
-import { LinearGradient } from "expo-linear-gradient";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+} from "../state/slices/selectionSlices";
+import { ChampionData } from "./championcard";
+import ChampionListComponent from "./championListComponent";
 
 const REGION = "euw1";
 
