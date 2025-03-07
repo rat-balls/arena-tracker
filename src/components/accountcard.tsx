@@ -117,16 +117,18 @@ export default function AccountCard({
           <Text style={styles.username}>
             {account.gameName}#{account.tagLine}
           </Text>
-          <TouchableOpacity onPress={toogleFavorite}>
-            <Image
-              source={
-                isFavorite
-                  ? require("../assets/images/favorite.png")
-                  : require("../assets/images/not_favorite.png")
-              }
-              style={styles.favoriteIcon}
-            />
-          </TouchableOpacity>
+          <View style={styles.iconContainer}>
+            <TouchableOpacity onPress={toogleFavorite}>
+              <Image
+                source={
+                  isFavorite
+                    ? require("../assets/images/favorite.png")
+                    : require("../assets/images/not_favorite.png")
+                }
+                style={styles.favoriteIcon}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -154,14 +156,15 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     flex: 1,
+    marginLeft: 10,
+    marginVertical: 10,
   },
   username: {
     fontSize: 18,
     color: "#C89B3C",
     textShadowColor: "#F0E6D2",
     textShadowOffset: { width: -1, height: 1 },
-
-    flex: 1,
+    flex: 5,
     textAlign: "center",
     fontFamily: "League",
   },
@@ -171,10 +174,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     width: "100%",
-    padding: 10,
   },
   favoriteIcon: {
     width: 30,
     height: 30,
+  },
+  iconContainer: {
+    flex: 1,
+    backgroundColor: "#1E282D",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 5,
   },
 });

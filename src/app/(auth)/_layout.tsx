@@ -31,17 +31,6 @@ const Layout = () => {
         }}
       />
       <Tabs.Screen
-        name="searchaccount"
-        options={{
-          title: "Search",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome size={28} name="search" color={color} />
-          ),
-          tabBarLabelStyle: { marginTop: 1 },
-          tabBarIconStyle: { marginTop: 2 },
-        }}
-      />
-      <Tabs.Screen
         name="readme"
         options={{
           title: "About",
@@ -65,12 +54,6 @@ const Layout = () => {
       />
       <Tabs.Screen
         name="accountDetails"
-        options={{
-          href: null,
-        }}
-      />
-      <Tabs.Screen
-        name="account"
         options={{
           href: null,
         }}
