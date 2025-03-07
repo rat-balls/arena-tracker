@@ -137,14 +137,14 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   inputRow: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 10,
   },
   inputContainer: {
-    marginHorizontal: 10,
-    alignItems: "center",
+    marginLeft: 13,
   },
   input: {
     color: "#C89B3C",
@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
     color: "#CDFAFA",
   },
   btn: {
+    marginLeft: 20,
     backgroundColor: "#0A323C",
     paddingHorizontal: 10,
     paddingVertical: 5,
