@@ -84,7 +84,7 @@ const s = StyleSheet.create({
   name: {
     fontFamily: "Beaufort Bold",
     color: "#ccbf91",
-    fontSize: 17,
+    fontSize: 16,
   },
   mastery: {
     fontFamily: "Spiegel SemiBold",

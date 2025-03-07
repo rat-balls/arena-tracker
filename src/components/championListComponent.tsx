@@ -255,7 +255,7 @@ export default function ChampionListComponent(champions: {
                 </LinearGradient>
               </TouchableHighlight>
             </View>
-            <View style={[s.orderContainer2, { marginLeft: -30 }]}>
+            <View style={[s.orderContainer2]}>
               <Text style={s.orderText}>Alphabet</Text>
               <TouchableHighlight onPress={() => setOrderAlphabet(true)}>
                 <LinearGradient
@@ -378,7 +378,6 @@ const s = StyleSheet.create({
     color: "#A09B8C",
   },
   orderContainer2: {
-    marginLeft: -10,
     flex: 1,
     alignItems: "center",
     justifyContent: "space-evenly",
