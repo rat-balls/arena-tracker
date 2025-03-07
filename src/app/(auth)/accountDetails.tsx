@@ -26,8 +26,6 @@ export default function Page() {
   const champions = useAppSelector(selectChampions);
   const dispatch = useAppDispatch();
 
-  const [championSearch, setChampionSearch] = useState("");
-
   const [matches, setMatches] = useState<MatchDetails[]>([]);
   const [godPlayedChampions, setGodPlayedChampions] = useState<
     [string[], string[]]

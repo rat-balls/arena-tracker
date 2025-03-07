@@ -58,7 +58,7 @@ export function RegisterUser(
 export function LoginUser(email: string, password: string): Promise<boolean> {
   return new Promise<boolean>((resolve, reject) => {
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCrendentials) => {
+      .then(() => {
         resolve(true);
       })
       .catch(({ message }: FirebaseError) => {

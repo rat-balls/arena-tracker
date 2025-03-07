@@ -31,7 +31,6 @@ interface IAccountCardProps {
 
 export default function AccountCard({
   account,
-  profilePicture,
   confirmUnfollow,
 }: IAccountCardProps | any) {
   const followProfiles = useAppSelector(selectFollowedProfiles);
@@ -42,7 +41,7 @@ export default function AccountCard({
   const isFavorite = useMemo<boolean>(() => {
     if (account === undefined) return false;
     return (
-      followProfiles.find(({ puuid }) => puuid === account.puuid) != undefined
+      followProfiles.find(({ puuid }) => puuid === account.puuid) !== undefined
     );
   }, [account, followProfiles]);
 
