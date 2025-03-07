@@ -5,11 +5,15 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableHighlight,
   TouchableOpacity,
   View,
 } from "react-native";
 import { RiotAccount, RiotService } from "../../api/Riot";
 import AccountCard from "../../components/accountcard";
+import { useAppDispatch } from "@/src/state/hooks";
+import { useRouter } from "expo-router";
+import { setProfile } from "@/src/state/slices/selectionSlices";
 let customFonts = {
   League: require("../../assets/fonts/League.otf"),
 };
@@ -20,6 +24,9 @@ export default function Searchaccount() {
 
   const [account, setAccount] = useState<RiotAccount | undefined>();
   useFonts(customFonts);
+
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const fetchAccount = () => {
     RiotService.FetchAccountInfo(gameName, tagLine)
@@ -57,7 +64,15 @@ export default function Searchaccount() {
         </TouchableOpacity>
       </View>
       {account === undefined ? null : (
-        <AccountCard account={account}></AccountCard>
+        <TouchableHighlight
+          style={styles.accountContainer}
+          onPress={() => {
+            dispatch(setProfile(account));
+            router.replace("/(auth)/accountDetails");
+          }}
+        >
+          <AccountCard account={account}></AccountCard>
+        </TouchableHighlight>
       )}
     </View>
   );
@@ -68,6 +83,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#0A1428",
     flex: 1,
+  },
+  accountContainer: {
+    height: 80,
+    width: "100%",
   },
   cardContainer: {
     width: "100%",
