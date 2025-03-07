@@ -29,10 +29,7 @@ export default function ChampionListItemComponent({
         <LinearGradient style={s.border} colors={["#1E282D", "#1E282D"]}>
           <View style={s.background}>
             <View style={s.left}>
-              <LinearGradient
-                colors={["#785A28", "#C8AA6E"]}
-                style={s.imgContainerBorder}
-              >
+              <LinearGradient colors={["#785A28", "#C8AA6E"]}>
                 <View style={s.imgContainer}>
                   <Image style={s.img} source={{ uri: imgUrl }}></Image>
                 </View>

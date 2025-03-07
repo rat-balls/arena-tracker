@@ -3,22 +3,22 @@ import { FontAwesome } from "@expo/vector-icons";
 
 const Layout = () => {
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: "blue", headerShown: false }}>
+    <Tabs
+      screenOptions={{
+        tabBarActiveBackgroundColor: "#463714",
+        tabBarInactiveBackgroundColor: "#0f171f",
+        tabBarInactiveTintColor: "#ccbf91",
+        tabBarActiveTintColor: "#ccbf91",
+        headerShown: false,
+        tabBarStyle: { borderTopWidth: 0 },
+      }}
+    >
       <Tabs.Screen
         name="home"
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
             <FontAwesome size={28} name="home" color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="account"
-        options={{
-          title: "Favorites",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome size={28} name="heart" color={color} />
           ),
         }}
       />
@@ -45,8 +45,15 @@ const Layout = () => {
         options={{
           title: "Logout",
           tabBarIcon: () => (
-            <FontAwesome size={28} name="sign-out" color={"red"} />
+            <FontAwesome size={28} name="sign-out" color={"#0AC8B9"} />
           ),
+          tabBarLabelStyle: { color: "#0AC8B9" },
+        }}
+      />
+      <Tabs.Screen
+        name="accountDetails"
+        options={{
+          href: null,
         }}
       />
     </Tabs>

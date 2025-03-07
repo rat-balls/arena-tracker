@@ -15,8 +15,8 @@ export interface ChampionData {
   championLastPlayed: number;
   markRequiredForNextLevel: number;
   tokensEarned: number;
-  god: boolean;
-  played: boolean;
+  played?: boolean;
+  god?: boolean;
 }
 
 interface IChampionCardProps {
