@@ -1,4 +1,5 @@
 import AccountCard from "@/src/components/accountcard";
+import SearchAccountComponent from "@/src/components/accountSearchComponent";
 import { useAppDispatch, useAppSelector } from "@/src/state/hooks";
 import { selectFollowedProfiles } from "@/src/state/slices/profileSlices";
 import { setProfile } from "@/src/state/slices/selectionSlices";
@@ -20,33 +21,28 @@ export default function Page() {
 
   return (
     <View style={styles.bgColor}>
-      {followProfiles.length === 0 ? (
-        <View style={styles.container}>
-          <Text style={styles.text}>
-            You don't have any account in your favorites
-          </Text>
+      <SearchAccountComponent />
+      <View
+        style={{
+          backgroundColor: "#1E282D",
+          width: "100%",
+          height: 2,
+          marginTop: 10,
+        }}
+      />
+      <FlatList
+        data={followProfiles}
+        renderItem={({ item }) => (
           <TouchableOpacity
-            style={styles.btn}
-            onPress={() => router.replace("/(auth)/searchaccount")}
+            onPress={() => {
+              dispatch(setProfile(item));
+              router.replace("/(auth)/accountDetails");
+            }}
           >
-            <Text style={styles.buttonText}>Search account</Text>
+            <AccountCard account={item} confirmUnfollow />
           </TouchableOpacity>
-        </View>
-      ) : (
-        <FlatList
-          data={followProfiles}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => {
-                dispatch(setProfile(item));
-                router.replace("/(auth)/accountDetails");
-              }}
-            >
-              <AccountCard account={item} confirmUnfollow />
-            </TouchableOpacity>
-          )}
-        ></FlatList>
-      )}
+        )}
+      ></FlatList>
     </View>
   );
 }

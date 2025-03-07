@@ -10,7 +10,13 @@ const Layout = () => {
         tabBarInactiveTintColor: "#ccbf91",
         tabBarActiveTintColor: "#ccbf91",
         headerShown: false,
-        tabBarStyle: { borderTopWidth: 0 },
+        tabBarStyle: {
+          borderTopWidth: 0,
+          borderColor: "#463714",
+          height: 55,
+          flex: 0,
+          justifyContent: "center",
+        },
       }}
     >
       <Tabs.Screen
@@ -20,6 +26,8 @@ const Layout = () => {
           tabBarIcon: ({ color }) => (
             <FontAwesome size={28} name="home" color={color} />
           ),
+          tabBarLabelStyle: { marginTop: 1 },
+          tabBarIconStyle: { marginTop: 2 },
         }}
       />
       <Tabs.Screen
@@ -29,6 +37,8 @@ const Layout = () => {
           tabBarIcon: ({ color }) => (
             <FontAwesome size={28} name="search" color={color} />
           ),
+          tabBarLabelStyle: { marginTop: 1 },
+          tabBarIconStyle: { marginTop: 2 },
         }}
       />
       <Tabs.Screen
@@ -38,6 +48,8 @@ const Layout = () => {
           tabBarIcon: ({ color }) => (
             <FontAwesome size={28} name="file" color={color} />
           ),
+          tabBarLabelStyle: { marginTop: 1 },
+          tabBarIconStyle: { marginTop: 2 },
         }}
       />
       <Tabs.Screen
@@ -47,7 +59,8 @@ const Layout = () => {
           tabBarIcon: () => (
             <FontAwesome size={28} name="sign-out" color={"#0AC8B9"} />
           ),
-          tabBarLabelStyle: { color: "#0AC8B9" },
+          tabBarLabelStyle: { color: "#0AC8B9", marginTop: 1 },
+          tabBarIconStyle: { marginTop: 2 },
         }}
       />
       <Tabs.Screen
