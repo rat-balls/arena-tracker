@@ -1,4 +1,4 @@
-import AccountCard from "@/src/components/accountcard";
+import AccountCard from "@/src/components/accountCard";
 import { useAppDispatch, useAppSelector } from "@/src/state/hooks";
 import { selectFollowedProfiles } from "@/src/state/slices/profileSlices";
 import { setProfile } from "@/src/state/slices/selectionSlices";

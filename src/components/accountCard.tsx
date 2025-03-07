@@ -146,7 +146,6 @@ const styles = StyleSheet.create({
     maxWidth: 50,
     height: 50,
     borderRadius: 10,
-    flex: 1,
   },
   username: {
     fontSize: 18,

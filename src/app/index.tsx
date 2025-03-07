@@ -178,10 +178,11 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 30,
+    fontSize: 32,
     fontFamily: "League",
     color: "white",
     textAlign: "center",
+    width: "100%",
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 20,

@@ -9,12 +9,12 @@ import {
   View,
 } from "react-native";
 import { RiotAccount, RiotService } from "../../api/Riot";
-import AccountCard from "../../components/accountcard";
+import AccountCard from "../../components/accountCard";
 let customFonts = {
   League: require("../../assets/fonts/League.otf"),
 };
 
-export default function Searchaccount() {
+export default function SearchAccount() {
   const [gameName, setGameName] = useState("");
   const [tagLine, setTagLine] = useState("");
 

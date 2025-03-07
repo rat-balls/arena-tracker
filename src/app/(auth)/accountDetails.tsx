@@ -4,10 +4,10 @@ import {
   Platform,
   SafeAreaView,
   StatusBar,
-  StyleSheet
+  StyleSheet,
 } from "react-native";
 import { MatchDetails, RiotService } from "../../api/Riot";
-import ChampionCard, { ChampionData } from "../../components/championcard";
+import { ChampionData } from "../../components/championCard";
 import { useAppDispatch, useAppSelector } from "../../state/hooks";
 import { selectChampions, setChampions } from "../../state/slices/dataSlices";
 import {
