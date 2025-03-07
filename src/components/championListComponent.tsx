@@ -20,6 +20,7 @@ enum Filter {
 
 interface ChampionType {
   key: string;
+  mastery: number;
   imgUrl: string;
   name: string;
   played: boolean;
@@ -30,21 +31,27 @@ export default function ChampionListComponent() {
   const champions = [
     {
       key: "266",
-      imgUrl: "",
+      mastery: 28,
+      imgUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU3HFVnkYFJ_OIogo__Qv58bmhwRqZJcQhOA&s",
       name: "Aatrox",
       played: true,
       god: true,
     },
     {
       key: "103",
-      imgUrl: "",
+      mastery: 5,
+      imgUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU3HFVnkYFJ_OIogo__Qv58bmhwRqZJcQhOA&s",
       name: "Ahri",
       played: true,
       god: false,
     },
     {
       key: "84",
-      imgUrl: "",
+      mastery: 2,
+      imgUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU3HFVnkYFJ_OIogo__Qv58bmhwRqZJcQhOA&s",
       name: "Akali",
       played: false,
       god: false,
@@ -124,7 +131,7 @@ export default function ChampionListComponent() {
               >
                 <TouchableHighlight
                   onPress={() => {
-                    setFilterFocus(true);
+                    setFilterFocus(!filterFocus);
                     blurSearch();
                   }}
                 >
@@ -235,6 +242,7 @@ export default function ChampionListComponent() {
       </View>
       <View style={s.scroll}>
         <FlatList
+          style={{ width: "100%" }}
           data={
             filter === Filter.DISABLED
               ? champions.filter((el) =>
@@ -264,6 +272,7 @@ export default function ChampionListComponent() {
           }
           renderItem={({ item }) => (
             <ChampionListItemComponent
+              mastery={item.mastery}
               imgUrl={item.imgUrl}
               name={item.name}
               played={item.played}
@@ -289,6 +298,7 @@ const s = StyleSheet.create({
   scroll: {
     flex: 1,
     flexWrap: "wrap",
+    width: "100%",
   },
   search: {
     color: "#A09B8C",
@@ -351,6 +361,7 @@ const s = StyleSheet.create({
     top: 49,
     left: 1.5,
     width: "96%",
+    zIndex: 10,
   },
   dropdown: {
     flex: 1,

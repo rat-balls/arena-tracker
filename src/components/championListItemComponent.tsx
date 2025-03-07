@@ -1,3 +1,4 @@
+import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import {
   Text,
@@ -5,10 +6,10 @@ import {
   Image,
   TouchableHighlight,
   StyleSheet,
-  Pressable,
 } from "react-native";
 
 interface TodoItemProps {
+  mastery: number;
   imgUrl: string;
   name: string;
   played: boolean;
@@ -16,6 +17,7 @@ interface TodoItemProps {
 }
 
 export default function ChampionListItemComponent({
+  mastery,
   imgUrl,
   name,
   played,
@@ -23,51 +25,126 @@ export default function ChampionListItemComponent({
 }: TodoItemProps) {
   return (
     <Link href="/" asChild>
-      <TouchableHighlight style={s.container}>
-        <View>
-          <Image source={{ uri: imgUrl }}></Image>
-          <Text style={s.name}>{name}</Text>
-          <View
-            style={{
-              width: 20,
-              height: 20,
-              backgroundColor: played ? "green" : "red",
-            }}
-          >
-            <Text>Played</Text>
+      <TouchableHighlight>
+        <LinearGradient style={s.border} colors={["#1E282D", "#1E282D"]}>
+          <View style={s.background}>
+            <View style={s.left}>
+              <LinearGradient
+                colors={["#785A28", "#C8AA6E"]}
+                style={s.imgContainerBorder}
+              >
+                <View style={s.imgContainer}>
+                  <Image source={{ uri: imgUrl }}></Image>
+                </View>
+              </LinearGradient>
+              <View style={s.textContainer}>
+                <Text style={s.name}>{name}</Text>
+                <Text style={s.mastery}>Mastery Level {mastery}</Text>
+              </View>
+            </View>
+            <View style={s.right}>
+              <View style={s.checkContainer}>
+                <LinearGradient
+                  colors={
+                    played ? ["#C8AA6E", "#785A28"] : ["#463714", "#463714"]
+                  }
+                >
+                  <LinearGradient
+                    colors={
+                      played ? ["#0AC8B9", "#0397AB"] : ["#0f171f", "#0f171f"]
+                    }
+                    style={s.check}
+                  />
+                </LinearGradient>
+                <Text style={s.checkText}>Played</Text>
+              </View>
+              <View style={s.checkContainer}>
+                <LinearGradient
+                  colors={god ? ["#C8AA6E", "#785A28"] : ["#463714", "#463714"]}
+                >
+                  <LinearGradient
+                    colors={
+                      god ? ["#0AC8B9", "#0397AB"] : ["#0f171f", "#0f171f"]
+                    }
+                    style={s.check}
+                  />
+                </LinearGradient>
+                <Text style={s.checkText}>God</Text>
+              </View>
+            </View>
           </View>
-          <View
-            style={{
-              width: 20,
-              height: 20,
-              backgroundColor: god ? "green" : "red",
-            }}
-          >
-            <Text>God</Text>
-          </View>{" "}
-        </View>
+        </LinearGradient>
       </TouchableHighlight>
     </Link>
   );
 }
 
 const s = StyleSheet.create({
-  container: {
+  textContainer: {
     flex: 1,
-    flexDirection: "row",
-    backgroundColor: "darkblue",
-    justifyContent: "space-between",
-    padding: 10,
-    margin: 5,
+    paddingLeft: 10,
   },
   name: {
-    color: "white",
-    padding: 10,
+    fontFamily: "Beaufort Bold",
+    color: "#ccbf91",
+    fontSize: 17,
   },
-  delete: {
-    color: "white",
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 5,
+  mastery: {
+    fontFamily: "Spiegel SemiBold",
+    color: "#A09B8C",
+    fontSize: 10,
+  },
+  left: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingVertical: 10,
+  },
+  right: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    paddingVertical: 10,
+  },
+  imgContainer: {
+    width: 60,
+    height: 60,
+  },
+  imgContainerBorder: {},
+  border: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 10,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: "#010A13",
+    width: "95%",
+  },
+  background: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    backgroundColor: "#010A13",
+    paddingHorizontal: 10,
+    margin: 1.5, // <-- Border Width
+    marginRight: 2,
+  },
+  checkContainer: {
+    flex: 1,
+    alignItems: "center",
+    marginBottom: -10,
+  },
+  checkText: {
+    color: "#A09B8C",
+    marginTop: 5,
+  },
+  check: {
+    width: 20,
+    height: 20,
+    margin: 1.5,
   },
 });
