@@ -1,22 +1,20 @@
-import { ChampionInfo, ChampionMastery, RiotAccount } from "@/src/api/Riot";
+import { ChampionMastery, RiotAccount } from "@/src/api/Riot";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
-// Profile state interface
+// State interface
 interface SelectionStates {
   currentProfile: RiotAccount | undefined;
-  champions: ChampionInfo[];
   championMasteries: ChampionMastery[];
 }
 
 // Initial value
 const initialState: SelectionStates = {
   currentProfile: undefined,
-  champions: [],
   championMasteries: [],
 };
 
-// Profile slice
+// Slice
 export const selectionSlice = createSlice({
   name: "selection",
   initialState,
@@ -27,9 +25,6 @@ export const selectionSlice = createSlice({
     unsetProfile: (state) => {
       state.currentProfile = undefined;
     },
-    setChampions: (state, action: PayloadAction<ChampionInfo[]>) => {
-      state.champions = action.payload;
-    },
     setChampionMasteries: (state, action: PayloadAction<ChampionMastery[]>) => {
       state.championMasteries = action.payload;
     },
@@ -37,11 +32,12 @@ export const selectionSlice = createSlice({
 });
 
 // Export store slice actions
-export const { setProfile, unsetProfile, setChampions, setChampionMasteries } =
+export const { setProfile, unsetProfile, setChampionMasteries } =
   selectionSlice.actions;
 
-// Helper function for selecting followed profiles
-export const selectFollowedProfiles = (state: RootState) =>
-  state.profiles.followed;
-
+// Helper function for select
+export const selectCurrentProfile = (state: RootState) =>
+  state.selection.currentProfile;
+export const selectChampionMasteries = (state: RootState) =>
+  state.selection.championMasteries;
 export default selectionSlice.reducer;

@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Button,
+  ImageBackground,
   KeyboardAvoidingView,
   StyleSheet,
   Text,
   TextInput,
-  View,
-  ImageBackground,
-  Alert,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { LoginUser, RegisterUser } from "../firebase/firebase";
 
@@ -23,7 +23,7 @@ export default function Index() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isRegistering, setIsRegistering] = useState(true);
+  const [isRegistering, setIsRegistering] = useState(false);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
 
   useFonts(customFonts);
@@ -53,7 +53,8 @@ export default function Index() {
         await RegisterUser(email, password);
         alert("Account created !");
       } catch (e) {
-        alert("Registration failed: " + e);
+        alert("Registration failed: ");
+        console.log(e);
       } finally {
         setLoading(false);
       }
@@ -64,9 +65,10 @@ export default function Index() {
     setLoading(true);
     try {
       await LoginUser(email, password);
-      alert("You are logged in");
+      Alert.alert("You are logged in");
     } catch (e) {
-      alert("Login failed: " + e);
+      Alert.alert("Invalid Credentials, Try again");
+      console.log(e);
     } finally {
       setLoading(false);
     }
