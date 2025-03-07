@@ -1,6 +1,6 @@
 import { RIOT_API_KEY, RIOT_CDN_VERSION } from "../config/env";
 
-const REQUEST_COOLDOWN = 3e3; // eX = *10^X
+const REQUEST_COOLDOWN = 0.1e3; // eX = *10^X
 const WaitingRequests: Record<string, boolean> = {};
 let LAST_REQUEST = 0; // UNIX
 
@@ -126,11 +126,10 @@ export class RiotService {
   /**
    * Fetch player's match history
    * @param puuid Player's uuid
-   * @param count How many matchs to fetch
    * @returns Promise of list of Match ids
    */
   public static FetchMatchHistory(puuid: string): Promise<string[]> {
-    const url = `https://${NEAREST_REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?&api_key=${RIOT_API_KEY}`;
+    const url = `https://${NEAREST_REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?api_key=${RIOT_API_KEY}`;
 
     return FetchRequest<string[]>(url);
   }

@@ -1,7 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useMemo, useState } from "react";
 import {
-  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
@@ -29,49 +28,39 @@ export default function Page() {
 
   const [championSearch, setChampionSearch] = useState("");
 
-  const [loading, setLoading] = useState<boolean>(true);
-
   const [matches, setMatches] = useState<MatchDetails[]>([]);
   const [godPlayedChampions, setGodPlayedChampions] = useState<
     [string[], string[]]
   >([[], []]);
 
-  const finishLoading = () => {
-    setLoading(
-      champions.length > 0 && masteries.length > 0 && matches.length > 0,
-    );
-  };
-
   useEffect(() => {
     if (account === undefined) return;
-
-    setLoading(true);
     // Get masteries
-    RiotService.FetchChampionsMastery(account.puuid, REGION)
-      .then((m) => {
-        dispatch(setChampionMasteries(m));
-      })
-      .finally(finishLoading);
+    console.log("getting champion mastery");
+    RiotService.FetchChampionsMastery(account.puuid, REGION).then((m) => {
+      dispatch(setChampionMasteries(m));
+      console.log("champion mastery ok");
+    });
 
     // Get matches
-    RiotService.FetchMatchHistory(account.puuid)
-      .then((matchIds) => {
-        matchIds.forEach((matchId) => {
-          RiotService.FetchMatchDetails(matchId)
-            .then((matchDetails) => setMatches((old) => [...old, matchDetails]))
-            .finally(finishLoading);
+    console.log("getting match history");
+    RiotService.FetchMatchHistory(account.puuid).then((matchIds) => {
+      console.log("got match ids", matchIds.length);
+      matchIds.forEach((matchId, i) => {
+        RiotService.FetchMatchDetails(matchId).then((matchDetails) => {
+          setMatches((old) => [...old, matchDetails]);
+          console.log(i + 1, "/", matchIds.length);
         });
-      })
-      .finally(finishLoading);
+      });
+    });
 
     // Get champions if not already in cache
-    if (champions.length > 0) return;
-    RiotService.FetchChampions("en_GB")
-      .then((result) => {
+    if (champions.length === 0) {
+      RiotService.FetchChampions("en_GB").then((result) => {
         const champions = Object.values(result.data);
         dispatch(setChampions(champions));
-      })
-      .finally(finishLoading);
+      });
+    }
   }, [account]);
 
   useEffect(() => {
@@ -79,7 +68,7 @@ export default function Page() {
     setGodPlayedChampions(
       RiotService.ChampionsGodOrPlayed(matches, account.puuid, "ARENA"),
     );
-  }, [matches]);
+  }, [matches, account]);
 
   const championMasteries: ChampionData[] = useMemo(() => {
     return masteries
@@ -115,21 +104,17 @@ export default function Page() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1 }}>
-        {loading ? (
-          <ActivityIndicator size={"small"} style={{ margin: 28 }} />
-        ) : (
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            enabled
-            style={{ flex: 1 }}
-          >
-            <LinearGradient
-              colors={["#091428", "#0A1428"]}
-              style={s.background}
-            />
-            <ChampionListComponent champions={championMasteries} />
-          </KeyboardAvoidingView>
-        )}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          enabled
+          style={{ flex: 1 }}
+        >
+          <LinearGradient
+            colors={["#091428", "#0A1428"]}
+            style={s.background}
+          />
+          <ChampionListComponent champions={championMasteries} />
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -142,4 +127,5 @@ const s = StyleSheet.create({
     top: 0,
     height: "100%",
   },
+  loading: { margin: 28, backgroundColor: "#0A1428" },
 });
