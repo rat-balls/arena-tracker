@@ -77,6 +77,11 @@ export default function Page() {
             (championName) => championName === champion.name,
           ) !== undefined;
 
+        const isPlayed =
+          godPlayedChampions[1].find(
+            (championName) => championName === champion.name,
+          ) !== undefined;
+
         return {
           championName: champion.name,
           championTitle: champion.title,
@@ -90,7 +95,7 @@ export default function Page() {
           markRequiredForNextLevel: mastery.markRequiredForNextLevel,
           tokensEarned: mastery.tokensEarned,
           god: isGod,
-          played: false,
+          played: isPlayed,
         };
       })
       .filter((r) => r !== undefined);
